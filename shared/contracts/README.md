@@ -69,6 +69,7 @@ Catatan:
 Event name yang disepakati:
 
 - `telemetry.joint-state.updated`
+- `telemetry.joint-angle.updated`
 - `telemetry.connection.state`
 - `control.set-joint-targets`
 - `control.set-gripper`
@@ -103,6 +104,16 @@ Contoh payload telemetry joint:
 		"wrist_roll_pivot": 0.3491,
 		"wrist_pivot": 0.2618
 	}
+}
+```
+
+Contoh payload status koneksi hardware:
+
+```json
+{
+	"isConnected": true,
+	"transport": "signalr",
+	"reason": "connected"
 }
 ```
 

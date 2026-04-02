@@ -6,6 +6,7 @@ import type { JointPivotMappingOutput } from '../../../../shared/contracts/joint
 import type { RawHardwareData } from '../../../../shared/contracts/raw-hardware-data';
 import {
   SignalREventName,
+  type TelemetryConnectionStatePayload,
   type TelemetryJointAngleUpdatePayload,
   type SignalREventEnvelope,
   type TelemetryJointStatePayload,
@@ -89,6 +90,26 @@ describe('shared contract compatibility (frontend)', () => {
 
     expect(envelope.eventName).toBe('telemetry.joint-angle.updated');
     expect(envelope.payload.mapped.wrist_pivot).toBeTypeOf('number');
+  });
+
+  it('memastikan event status koneksi hardware terdefinisi untuk sinkronisasi realtime', () => {
+    const payload: TelemetryConnectionStatePayload = {
+      isConnected: true,
+      transport: 'signalr',
+      reason: 'connected',
+    };
+
+    const envelope: SignalREventEnvelope<TelemetryConnectionStatePayload> = {
+      eventName: SignalREventName.TelemetryConnectionState,
+      messageId: 'msg-conn-1',
+      timestampUtc: '2026-04-02T07:30:00Z',
+      source: 'hub',
+      payload,
+    };
+
+    expect(envelope.eventName).toBe('telemetry.connection.state');
+    expect(envelope.payload.isConnected).toBe(true);
+    expect(envelope.payload.transport).toBe('signalr');
   });
 
   it('memastikan metadata DTO untuk generator dokumentasi tersedia', () => {
