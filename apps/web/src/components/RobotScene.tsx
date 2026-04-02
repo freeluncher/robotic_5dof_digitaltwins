@@ -6,6 +6,7 @@ import type { Group } from 'three';
 import { ROBOTIC_V4_GLB_URL } from '../assets/modelAssets';
 import { useRobotStore } from '../stores/robotStore';
 import { mapHardwareToPivot } from '../utils/kinematics';
+import { verifyYUpAndExportTransform } from '../utils/orientationVerification';
 import { applyJointMappingToSceneGraph } from '../utils/sceneGraphMapping';
 
 function RobotModel() {
@@ -15,6 +16,10 @@ function RobotModel() {
 
   const mappedScene = useMemo(() => {
     const clone = scene.clone(true);
+    const orientationReport = verifyYUpAndExportTransform(clone);
+    if (orientationReport.issues.length > 0) {
+      console.warn('[RobotScene] Orientation/export transform verification issues:', orientationReport);
+    }
     applyJointMappingToSceneGraph(clone, mapped);
     return clone;
   }, [scene, mapped]);

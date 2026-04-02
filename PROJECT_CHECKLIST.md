@@ -94,7 +94,7 @@ Membangun aplikasi Digital Twin untuk Robotic Arm 5 DOF (robotic_v4) yang memung
 - [x] Verifikasi nama node dan pivot sesuai hierarchy Blender.
 - [x] Pastikan rotasi diterapkan ke pivot, bukan mesh link.
 - [x] Implementasikan pemetaan joint ke scene graph Three.js.
-- [ ] Verifikasi orientasi Y-up dan transform hasil export Blender.
+- [x] Verifikasi orientasi Y-up dan transform hasil export Blender.
 - [ ] Tambahkan catatan troubleshooting untuk `Apply All Transforms` di Blender.
 
 ## 7. Backend Foundation
