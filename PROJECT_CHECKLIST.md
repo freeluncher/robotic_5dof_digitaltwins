@@ -101,8 +101,8 @@ Membangun aplikasi Digital Twin untuk Robotic Arm 5 DOF (robotic_v4) yang memung
 
 - [x] Buat proyek .NET 8 API.
 - [x] Buat proyek xUnit untuk backend.
-- [ ] Tambahkan solusi folder yang jelas untuk API, tests, dan shared.
-- [ ] Tambahkan endpoint health check yang stabil.
+- [x] Tambahkan solusi folder yang jelas untuk API, tests, dan shared.
+- [x] Tambahkan endpoint health check yang stabil.
 - [ ] Tambahkan struktur service, controller, hub, dan validation.
 - [ ] Tambahkan logging dasar dan error handling global.
 

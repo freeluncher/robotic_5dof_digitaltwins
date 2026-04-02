@@ -6,13 +6,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "apps", "apps", "{1787FE1D-0
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "api", "api", "{BC2D172B-13BC-136C-CDB1-4B1A687208C4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5297E159-35AB-900F-0FBF-1931F1997C37}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{5297E159-35AB-900F-0FBF-1931F1997C37}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robotic_v4.Api", "apps\api\src\robotic_v4.Api.csproj", "{32096106-022B-B0DA-28C4-892B80223B1A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{858C69E3-D23F-514B-EBEF-81CDB591EF58}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{858C69E3-D23F-514B-EBEF-81CDB591EF58}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "robotic_v4.Api.Tests", "apps\api\tests\robotic_v4.Api.Tests.csproj", "{2270DE88-8121-A8A0-9DF7-7DD35614E3B7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{4E5E2DFB-BB42-4D4E-BB50-949FC9F5C2C6}"
+	ProjectSection(SolutionItems) = preProject
+		shared\contracts\README.md = shared\contracts\README.md
+		shared\contracts\raw-hardware-data.cs = shared\contracts\raw-hardware-data.cs
+		shared\contracts\joint-pivot-mapping-output.cs = shared\contracts\joint-pivot-mapping-output.cs
+		shared\contracts\signalr-events.cs = shared\contracts\signalr-events.cs
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,6 +46,7 @@ Global
 		{32096106-022B-B0DA-28C4-892B80223B1A} = {5297E159-35AB-900F-0FBF-1931F1997C37}
 		{858C69E3-D23F-514B-EBEF-81CDB591EF58} = {BC2D172B-13BC-136C-CDB1-4B1A687208C4}
 		{2270DE88-8121-A8A0-9DF7-7DD35614E3B7} = {858C69E3-D23F-514B-EBEF-81CDB591EF58}
+		{4E5E2DFB-BB42-4D4E-BB50-949FC9F5C2C6} = {1787FE1D-075E-9E68-7218-25F1BD1BBEAB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {460C61C6-22FE-4BA5-A30A-A88589716D1C}
