@@ -9,6 +9,11 @@ Folder ini menyimpan kontrak yang dipakai bersama frontend dan backend.
 	- JSON Schema: `raw-hardware-data.schema.json`
 	- C#: `RawHardwareData.cs`
 
+- JointPivotMappingOutput:
+	- TypeScript: `joint-pivot-mapping-output.ts`
+	- JSON Schema: `joint-pivot-mapping-output.schema.json`
+	- C#: `JointPivotMappingOutput.cs`
+
 ### RawHardwareData Shape
 
 Payload ini merepresentasikan input hardware 5 DOF dalam derajat (envelope hardware 0..180):
@@ -30,6 +35,25 @@ Mapping ke pivot scene:
 - `elbow` -> `elbow_pivot`
 - `wristRoll` -> `wrist_roll_pivot`
 - `wrist` -> `wrist_pivot`
+
+### JointPivotMappingOutput Shape
+
+Payload ini merepresentasikan output mapping untuk animasi scene 3D dalam radians:
+
+```json
+{
+	"waist_pivot": 1.5708,
+	"shoulder_pivot": 0.7854,
+	"elbow_pivot": 1.9199,
+	"wrist_roll_pivot": 0.3491,
+	"wrist_pivot": 0.2618
+}
+```
+
+Catatan:
+
+- Input hardware berada di derajat (RawHardwareData).
+- Output mapping ke pivot menggunakan radians agar langsung kompatibel dengan Three.js.
 
 ## Isi yang Disarankan
 

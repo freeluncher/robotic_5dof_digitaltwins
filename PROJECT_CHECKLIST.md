@@ -62,7 +62,7 @@ Membangun aplikasi Digital Twin untuk Robotic Arm 5 DOF (robotic_v4) yang memung
 ## 3. Kontrak Bersama
 
 - [x] Definisikan format `RawHardwareData` untuk input hardware.
-- [ ] Definisikan format output mapping joint ke pivot.
+- [x] Definisikan format output mapping joint ke pivot.
 - [ ] Definisikan kontrak event SignalR untuk telemetry dan kontrol.
 - [ ] Definisikan skema DTO bersama dalam `shared/contracts`.
 - [ ] Tambahkan dokumentasi kontrak agar generator otomatis bisa membaca struktur data.
