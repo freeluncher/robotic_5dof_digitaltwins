@@ -9,6 +9,22 @@ export const hardwareFixtureLinear: RawHardwareData = {
   wrist: 180,
 };
 
+export const hardwareFixtureMin: RawHardwareData = {
+  waist: 0,
+  shoulder: 0,
+  elbow: 0,
+  wristRoll: 0,
+  wrist: 0,
+};
+
+export const hardwareFixtureMax: RawHardwareData = {
+  waist: 180,
+  shoulder: 180,
+  elbow: 180,
+  wristRoll: 180,
+  wrist: 180,
+};
+
 export const mappedFixtureRadians: JointPivotMappingOutput = {
   waist_pivot: 0,
   shoulder_pivot: Math.PI / 4,

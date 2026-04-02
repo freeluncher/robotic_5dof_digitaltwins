@@ -4,7 +4,13 @@ import type { RawHardwareData } from '../../../../shared/contracts/raw-hardware-
 const HARDWARE_MIN_DEG = 0;
 const HARDWARE_MAX_DEG = 180;
 
-function assertHardwareRange(joint: string, degrees: number): void {
+function assertHardwareValue(joint: string, value: unknown): asserts value is number {
+  if (typeof value !== 'number' || Number.isNaN(value) || !Number.isFinite(value)) {
+    throw new TypeError(`${joint} must be a finite number`);
+  }
+
+  const degrees = value;
+
   if (degrees < HARDWARE_MIN_DEG || degrees > HARDWARE_MAX_DEG) {
     throw new RangeError(
       `${joint} is out of hardware range (${HARDWARE_MIN_DEG}..${HARDWARE_MAX_DEG}): ${degrees}`,
@@ -17,11 +23,15 @@ export function convertToRadians(degrees: number): number {
 }
 
 export function mapHardwareToPivot(data: RawHardwareData): JointPivotMappingOutput {
-  assertHardwareRange('waist', data.waist);
-  assertHardwareRange('shoulder', data.shoulder);
-  assertHardwareRange('elbow', data.elbow);
-  assertHardwareRange('wristRoll', data.wristRoll);
-  assertHardwareRange('wrist', data.wrist);
+  if (data == null || typeof data !== 'object') {
+    throw new TypeError('data must be an object');
+  }
+
+  assertHardwareValue('waist', data.waist);
+  assertHardwareValue('shoulder', data.shoulder);
+  assertHardwareValue('elbow', data.elbow);
+  assertHardwareValue('wristRoll', data.wristRoll);
+  assertHardwareValue('wrist', data.wrist);
 
   return {
     waist_pivot: convertToRadians(data.waist),

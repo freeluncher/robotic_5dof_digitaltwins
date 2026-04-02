@@ -85,8 +85,8 @@ Membangun aplikasi Digital Twin untuk Robotic Arm 5 DOF (robotic_v4) yang memung
 - [x] Implementasikan `convertToRadians`.
 - [x] Implementasikan `mapHardwareToPivot`.
 - [x] Tambahkan guard untuk nilai di luar rentang hardware.
-- [ ] Tambahkan test untuk edge case batas minimum dan maksimum tiap joint.
-- [ ] Tambahkan test untuk nilai input tidak valid seperti `null`, `undefined`, atau `NaN` jika dibutuhkan.
+- [x] Tambahkan test untuk edge case batas minimum dan maksimum tiap joint.
+- [x] Tambahkan test untuk nilai input tidak valid seperti `null`, `undefined`, atau `NaN` jika dibutuhkan.
 
 ## 6. 3D Robot Model Integration
 

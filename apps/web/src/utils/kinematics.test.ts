@@ -3,6 +3,8 @@ import { describe, expect, it } from 'vitest';
 import {
   degreeToRadianCases,
   hardwareFixtureLinear,
+  hardwareFixtureMax,
+  hardwareFixtureMin,
 } from '../tests/fixtures/kinematicsFixtures';
 import { convertToRadians, mapHardwareToPivot } from './kinematics';
 
@@ -75,4 +77,45 @@ it('memetakan data wrist ke wrist_pivot pada batas aman 0°-180°', () => {
 it('melempar error saat nilai hardware berada di luar rentang aman 0°-180°', () => {
   expect(() => mapHardwareToPivot({ ...hardwareFixtureLinear, waist: -1 })).toThrow(RangeError);
   expect(() => mapHardwareToPivot({ ...hardwareFixtureLinear, shoulder: 181 })).toThrow(RangeError);
+});
+
+/**
+ * Edge case batas minimum dan maksimum harus tetap valid karena merupakan limit envelope hardware.
+ * Test ini memastikan 0° dan 180° untuk semua joint tidak ditolak oleh guard.
+ */
+it('menerima edge case minimum 0° dan maksimum 180° untuk semua joint', () => {
+  const mappedMin = mapHardwareToPivot(hardwareFixtureMin);
+  const mappedMax = mapHardwareToPivot(hardwareFixtureMax);
+
+  expect(mappedMin.waist_pivot).toBe(0);
+  expect(mappedMin.shoulder_pivot).toBe(0);
+  expect(mappedMin.elbow_pivot).toBe(0);
+  expect(mappedMin.wrist_roll_pivot).toBe(0);
+  expect(mappedMin.wrist_pivot).toBe(0);
+
+  expect(mappedMax.waist_pivot).toBe(Math.PI);
+  expect(mappedMax.shoulder_pivot).toBe(Math.PI);
+  expect(mappedMax.elbow_pivot).toBe(Math.PI);
+  expect(mappedMax.wrist_roll_pivot).toBe(Math.PI);
+  expect(mappedMax.wrist_pivot).toBe(Math.PI);
+});
+
+/**
+ * Input invalid seperti null, undefined, dan NaN harus ditolak agar pipeline kinematics tidak memproses data korup.
+ */
+it('melempar error untuk input invalid seperti null, undefined, dan NaN', () => {
+  expect(() => mapHardwareToPivot(null as unknown as never)).toThrow(TypeError);
+  expect(() => mapHardwareToPivot(undefined as unknown as never)).toThrow(TypeError);
+  expect(() =>
+    mapHardwareToPivot({
+      ...hardwareFixtureLinear,
+      elbow: Number.NaN,
+    }),
+  ).toThrow(TypeError);
+  expect(() =>
+    mapHardwareToPivot({
+      ...hardwareFixtureLinear,
+      wrist: undefined as unknown as never,
+    }),
+  ).toThrow(TypeError);
 });
