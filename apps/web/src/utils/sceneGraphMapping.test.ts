@@ -27,6 +27,28 @@ function createRobotRoot(): Group {
   return root;
 }
 
+function createHierarchicalRobotRootForWristRoll(): Group {
+  const root = createNode('robotic_v4') as Group;
+  const waist = createNode('waist_pivot');
+  const shoulder = createNode('shoulder_pivot');
+  const elbow = createNode('elbow_pivot');
+  const link2 = createNode('link2');
+  const wristRoll = createNode('wrist_roll_pivot');
+  const wrist = createNode('wrist_pivot');
+
+  root.add(waist);
+  waist.add(shoulder);
+  shoulder.add(elbow);
+  elbow.add(link2);
+  link2.add(wristRoll);
+  wristRoll.add(wrist);
+
+  elbow.position.set(0, 0, 1);
+  wristRoll.position.set(1, 0, 0);
+
+  return root;
+}
+
 describe('scene graph joint mapping', () => {
   it('menghitung jumlah pivot utama yang terdeteksi di scene graph', () => {
     const root = createRobotRoot();
@@ -69,7 +91,22 @@ describe('scene graph joint mapping', () => {
       mappedFixtureRadians.wrist_roll_pivot,
     );
     expect(root.getObjectByName('wrist_roll_pivot')?.rotation.z).toBe(0);
-    expect(root.getObjectByName('wrist_pivot')?.rotation.z).toBe(mappedFixtureRadians.wrist_pivot);
+    expect(root.getObjectByName('wrist_pivot')?.rotation.x).toBe(mappedFixtureRadians.wrist_pivot);
+    expect(root.getObjectByName('wrist_pivot')?.rotation.z).toBe(0);
     expect(link1.rotation.z).toBe(0);
+  });
+
+  it('menerapkan wrist roll mengikuti normal link2 saat hierarchy lengkap', () => {
+    const root = createHierarchicalRobotRootForWristRoll();
+
+    applyJointMappingToSceneGraph(root, mappedFixtureRadians);
+
+    const wristRollPivot = root.getObjectByName('wrist_roll_pivot');
+    if (!wristRollPivot) {
+      throw new Error('Missing wrist_roll_pivot test node');
+    }
+
+    expect(Math.abs(wristRollPivot.quaternion.x)).toBeGreaterThan(0);
+    expect(wristRollPivot.rotation.y).toBeCloseTo(0, 6);
   });
 });

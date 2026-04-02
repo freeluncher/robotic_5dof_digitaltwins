@@ -52,6 +52,6 @@ export function applyMappedRotationsToPivots(nodes: PivotNodeMap, mapped: JointP
 
     // All main joints are applied through pivot transform nodes, not mesh links.
     const mapping = ROTATION_MAPPING_BY_PIVOT[pivot];
-    node.rotation[mapping.axis] = mappingByPivot[pivot] * mapping.direction;
+    node.rotation[mapping.axis] = (mapping.offset ?? 0) + mappingByPivot[pivot] * mapping.direction;
   }
 }

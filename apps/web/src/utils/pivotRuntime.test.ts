@@ -36,7 +36,8 @@ describe('pivot runtime verification and application', () => {
     expect(nodes.elbow_pivot.rotation.z).toBe(0);
     expect(nodes.wrist_roll_pivot.rotation.y).toBe(mappedFixtureRadians.wrist_roll_pivot);
     expect(nodes.wrist_roll_pivot.rotation.z).toBe(0);
-    expect(nodes.wrist_pivot.rotation.z).toBe(mappedFixtureRadians.wrist_pivot);
+    expect(nodes.wrist_pivot.rotation.x).toBe(mappedFixtureRadians.wrist_pivot);
+    expect(nodes.wrist_pivot.rotation.z).toBe(0);
 
     // Mesh link is intentionally untouched to enforce pivot-only rotation updates.
     expect(nodes.link1.rotation.z).toBe(0);

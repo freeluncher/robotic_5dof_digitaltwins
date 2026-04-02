@@ -5,6 +5,7 @@ import { Box3, Vector3 } from 'three';
 import type { Group } from 'three';
 
 import { ROBOTIC_V4_GLB_URL } from '../assets/modelAssets';
+import { JointDebugHelpers } from './JointDebugHelpers';
 import { useRobotStore } from '../stores/robotStore';
 import { mapHardwareToPivotDeltaFromNeutral } from '../utils/kinematics';
 import { resolveModelScaleFromHeight } from '../utils/modelScaleNormalization';
@@ -33,7 +34,7 @@ function RobotModel() {
   const mapped = useMemo(() => mapHardwareToPivotDeltaFromNeutral(hardware), [hardware]);
   const { scene } = useGLTF(ROBOTIC_V4_GLB_URL) as { scene: Group };
 
-  const { runtimeScene, modelScale } = useMemo(() => {
+  const { runtimeScene, modelScale, debugHelperLength } = useMemo(() => {
     const clone = scene.clone(true);
     tempBox.setFromObject(clone);
     tempBox.getSize(tempSize);
@@ -44,6 +45,7 @@ function RobotModel() {
     return {
       runtimeScene: clone,
       modelScale: scaleInfo.appliedScale,
+      debugHelperLength: scaleInfo.reason === 'likely-mm-model' ? 50 : 0.05,
     };
   }, [scene]);
 
@@ -51,7 +53,12 @@ function RobotModel() {
     applyJointMappingToSceneGraph(runtimeScene, mapped);
   }, [runtimeScene, mapped]);
 
-  return <primitive object={runtimeScene} scale={modelScale} />;
+  return (
+    <>
+      <primitive object={runtimeScene} scale={modelScale} />
+      {ENABLE_DEBUG ? <JointDebugHelpers root={runtimeScene} helperLength={debugHelperLength} /> : null}
+    </>
+  );
 }
 
 function SceneDebugOverlay({ info }: { info: SceneDebugInfo }) {
