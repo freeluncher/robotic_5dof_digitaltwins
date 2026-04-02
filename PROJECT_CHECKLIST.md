@@ -71,7 +71,7 @@ Membangun aplikasi Digital Twin untuk Robotic Arm 5 DOF (robotic_v4) yang memung
 ## 4. Frontend Foundation
 
 - [x] Buat scaffold React + Vite untuk `apps/web`.
-- [ ] Pasang dan verifikasi Zustand untuk state robot, UI, dan connectivity.
+- [x] Pasang dan verifikasi Zustand untuk state robot, UI, dan connectivity.
 - [x] Siapkan konfigurasi Vitest.
 - [x] Siapkan setup file test frontend.
 - [ ] Tambahkan test helper dan fixture data untuk state dan kinematics.
