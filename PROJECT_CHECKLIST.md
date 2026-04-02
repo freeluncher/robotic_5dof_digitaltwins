@@ -125,7 +125,7 @@ Membangun aplikasi Digital Twin untuk Robotic Arm 5 DOF (robotic_v4) yang memung
 - [x] Tambahkan test integrasi untuk backend API.
 - [x] Tambahkan test integrasi untuk SignalR hub.
 - [x] Tambahkan test kontrak untuk shared schema.
-- [ ] Tambahkan coverage target minimum.
+- [x] Tambahkan coverage target minimum.
 
 ## 10. Dokumentasi Otomatis
 
