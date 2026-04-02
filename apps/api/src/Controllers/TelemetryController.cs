@@ -11,15 +11,18 @@ namespace RoboticV4.Api.Controllers;
 [Route("api/telemetry")]
 public sealed class TelemetryController : ControllerBase
 {
+    private readonly ILogger<TelemetryController> _logger;
     private readonly IHardwareDataValidator _validator;
     private readonly IRobotTelemetryService _telemetryService;
     private readonly IHubContext<RobotTelemetryHub> _hub;
 
     public TelemetryController(
+        ILogger<TelemetryController> logger,
         IHardwareDataValidator validator,
         IRobotTelemetryService telemetryService,
         IHubContext<RobotTelemetryHub> hub)
     {
+        _logger = logger;
         _validator = validator;
         _telemetryService = telemetryService;
         _hub = hub;
@@ -32,8 +35,17 @@ public sealed class TelemetryController : ControllerBase
     {
         if (!_validator.TryValidate(request, out var errors))
         {
+            _logger.LogWarning("Telemetry payload rejected. ValidationErrors: {ValidationErrors}", errors.Keys);
             return BadRequest(new ValidationProblemDetails(errors));
         }
+
+        _logger.LogInformation(
+            "Telemetry payload accepted. Waist={Waist}, Shoulder={Shoulder}, Elbow={Elbow}, WristRoll={WristRoll}, Wrist={Wrist}",
+            request.Waist,
+            request.Shoulder,
+            request.Elbow,
+            request.WristRoll,
+            request.Wrist);
 
         var envelope = _telemetryService.CreateJointStateTelemetry(request);
 

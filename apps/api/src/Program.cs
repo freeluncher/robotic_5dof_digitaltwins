@@ -1,19 +1,31 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.HttpLogging;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using RoboticV4.Api.Hubs;
+using RoboticV4.Api.Middleware;
 using RoboticV4.Api.Services;
 using RoboticV4.Api.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddHttpLogging(options =>
+{
+	options.LoggingFields = HttpLoggingFields.RequestMethod |
+							HttpLoggingFields.RequestPath |
+							HttpLoggingFields.ResponseStatusCode |
+							HttpLoggingFields.Duration;
+});
 builder.Services.AddHealthChecks();
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<IHardwareDataValidator, HardwareDataValidator>();
 builder.Services.AddSingleton<IRobotTelemetryService, RobotTelemetryService>();
 
 var app = builder.Build();
+
+app.UseHttpLogging();
+app.UseMiddleware<GlobalExceptionMiddleware>();
 
 app.MapControllers();
 app.MapHealthChecks("/health", new HealthCheckOptions
