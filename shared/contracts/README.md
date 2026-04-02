@@ -14,6 +14,15 @@ Folder ini menyimpan kontrak yang dipakai bersama frontend dan backend.
 	- JSON Schema: `joint-pivot-mapping-output.schema.json`
 	- C#: `JointPivotMappingOutput.cs`
 
+- SignalR Events (Telemetry + Control):
+	- TypeScript: `signalr-events.ts`
+	- JSON Schema: `signalr-events.schema.json`
+	- C#: `SignalREvents.cs`
+
+- DTO Schema Bundle and Catalog:
+	- Root schema bundle: `dto.schema.json`
+	- Machine-readable catalog: `dto-catalog.json`
+
 ### RawHardwareData Shape
 
 Payload ini merepresentasikan input hardware 5 DOF dalam derajat (envelope hardware 0..180):
@@ -54,6 +63,62 @@ Catatan:
 
 - Input hardware berada di derajat (RawHardwareData).
 - Output mapping ke pivot menggunakan radians agar langsung kompatibel dengan Three.js.
+
+### SignalR Event Contracts
+
+Event name yang disepakati:
+
+- `telemetry.joint-state.updated`
+- `telemetry.connection.state`
+- `control.set-joint-targets`
+- `control.set-gripper`
+
+Envelope standar:
+
+```json
+{
+	"eventName": "telemetry.joint-state.updated",
+	"messageId": "8f7e6d7a-3d24-45c1-b317-9ccce8b8d3ec",
+	"timestampUtc": "2026-04-02T07:30:00Z",
+	"source": "api",
+	"payload": {}
+}
+```
+
+Contoh payload telemetry joint:
+
+```json
+{
+	"hardware": {
+		"waist": 90,
+		"shoulder": 45,
+		"elbow": 110,
+		"wristRoll": 80,
+		"wrist": 70
+	},
+	"mapped": {
+		"waist_pivot": 1.5708,
+		"shoulder_pivot": 0.7854,
+		"elbow_pivot": 1.9199,
+		"wrist_roll_pivot": 0.3491,
+		"wrist_pivot": 0.2618
+	}
+}
+```
+
+## Dokumentasi Otomatis
+
+Generator dokumentasi dapat menggunakan berkas berikut:
+
+- `dto-catalog.json` sebagai daftar kontrak lintas bahasa.
+- `dto.schema.json` sebagai root schema bundle untuk validasi dan index.
+- Seluruh `*.schema.json` untuk detail field-level.
+
+Strategi konsumsi generator:
+
+1. Baca `dto-catalog.json` untuk menemukan kontrak, kategori, dan path file.
+2. Gunakan `schema` per kontrak untuk rendering tabel field dan validasi.
+3. Tautkan `typescript` dan `csharp` agar docs menyajikan representasi lintas stack.
 
 ## Isi yang Disarankan
 

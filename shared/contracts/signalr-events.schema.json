@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://freeluncher.github.io/robotic_5dof_digitaltwins/contracts/signalr-events.schema.json",
+  "title": "SignalRContracts",
+  "description": "SignalR event envelope and payload contracts for telemetry and control.",
+  "$defs": {
+    "rawHardwareData": {
+      "$ref": "./raw-hardware-data.schema.json"
+    },
+    "jointPivotMappingOutput": {
+      "$ref": "./joint-pivot-mapping-output.schema.json"
+    },
+    "eventName": {
+      "type": "string",
+      "enum": [
+        "telemetry.joint-state.updated",
+        "telemetry.connection.state",
+        "control.set-joint-targets",
+        "control.set-gripper"
+      ]
+    },
+    "eventEnvelopeBase": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "eventName",
+        "messageId",
+        "timestampUtc",
+        "source",
+        "payload"
+      ],
+      "properties": {
+        "eventName": {
+          "$ref": "#/$defs/eventName"
+        },
+        "messageId": {
+          "type": "string"
+        },
+        "timestampUtc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "hardware",
+            "api",
+            "web"
+          ]
+        }
+      }
+    },
+    "telemetryJointStatePayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "hardware",
+        "mapped"
+      ],
+      "properties": {
+        "hardware": {
+          "$ref": "#/$defs/rawHardwareData"
+        },
+        "mapped": {
+          "$ref": "#/$defs/jointPivotMappingOutput"
+        }
+      }
+    },
+    "telemetryConnectionStatePayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "isConnected",
+        "transport"
+      ],
+      "properties": {
+        "isConnected": {
+          "type": "boolean"
+        },
+        "transport": {
+          "type": "string",
+          "enum": [
+            "serial",
+            "wifi",
+            "simulator"
+          ]
+        },
+        "reason": {
+          "type": "string"
+        }
+      }
+    },
+    "controlSetJointTargetsPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "hardwareTargets"
+      ],
+      "properties": {
+        "hardwareTargets": {
+          "$ref": "#/$defs/rawHardwareData"
+        }
+      }
+    },
+    "controlSetGripperPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "openRatio"
+      ],
+      "properties": {
+        "openRatio": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    }
+  },
+  "oneOf": [
+    {
+      "allOf": [
+        {
+          "$ref": "#/$defs/eventEnvelopeBase"
+        },
+        {
+          "properties": {
+            "eventName": {
+              "const": "telemetry.joint-state.updated"
+            },
+            "payload": {
+              "$ref": "#/$defs/telemetryJointStatePayload"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "$ref": "#/$defs/eventEnvelopeBase"
+        },
+        {
+          "properties": {
+            "eventName": {
+              "const": "telemetry.connection.state"
+            },
+            "payload": {
+              "$ref": "#/$defs/telemetryConnectionStatePayload"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "$ref": "#/$defs/eventEnvelopeBase"
+        },
+        {
+          "properties": {
+            "eventName": {
+              "const": "control.set-joint-targets"
+            },
+            "payload": {
+              "$ref": "#/$defs/controlSetJointTargetsPayload"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "$ref": "#/$defs/eventEnvelopeBase"
+        },
+        {
+          "properties": {
+            "eventName": {
+              "const": "control.set-gripper"
+            },
+            "payload": {
+              "$ref": "#/$defs/controlSetGripperPayload"
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

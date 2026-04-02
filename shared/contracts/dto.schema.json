@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://freeluncher.github.io/robotic_5dof_digitaltwins/contracts/dto.schema.json",
+  "title": "RoboticV4SharedDtos",
+  "description": "Root DTO schema bundle for shared contracts used by frontend and backend.",
+  "oneOf": [
+    {
+      "$ref": "./raw-hardware-data.schema.json"
+    },
+    {
+      "$ref": "./joint-pivot-mapping-output.schema.json"
+    },
+    {
+      "$ref": "./signalr-events.schema.json"
+    }
+  ]
+}

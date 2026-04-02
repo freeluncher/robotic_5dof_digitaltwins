@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "catalogVersion": "1.0.0",
+  "generatedAtUtc": "2026-04-02T00:00:00Z",
+  "contracts": [
+    {
+      "name": "RawHardwareData",
+      "category": "dto.input",
+      "typescript": "./raw-hardware-data.ts",
+      "csharp": "./RawHardwareData.cs",
+      "schema": "./raw-hardware-data.schema.json"
+    },
+    {
+      "name": "JointPivotMappingOutput",
+      "category": "dto.output",
+      "typescript": "./joint-pivot-mapping-output.ts",
+      "csharp": "./JointPivotMappingOutput.cs",
+      "schema": "./joint-pivot-mapping-output.schema.json"
+    },
+    {
+      "name": "SignalREvents",
+      "category": "event.realtime",
+      "typescript": "./signalr-events.ts",
+      "csharp": "./SignalREvents.cs",
+      "schema": "./signalr-events.schema.json"
+    }
+  ]
+}
