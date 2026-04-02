@@ -8,25 +8,38 @@ import {
   updatedMappedFixture,
 } from '../tests/fixtures/storeFixtures';
 import { useConnectivityStore } from './connectivityStore';
-import { useRobotStore } from './robotStore';
+import { flushRobotStoreUpdates, useRobotStore } from './robotStore';
 import { useUiStore } from './uiStore';
 
 describe('zustand stores setup', () => {
   it('mengelola robot state untuk hardware dan mapped pivot', () => {
     resetAllStores();
 
-    useRobotStore.setState({
-      hardware: defaultHardwareFixture,
-      mapped: defaultMappedFixture,
-    });
-
     useRobotStore.getState().setHardware(updatedHardwareFixture);
     useRobotStore.getState().setMapped(updatedMappedFixture);
+    flushRobotStoreUpdates();
 
     const state = useRobotStore.getState();
     expect(state.hardware.waist).toBe(100);
     expect(state.hardware.wristRoll).toBe(120);
     expect(state.mapped.waist_pivot).toBe(Math.PI / 2);
+  });
+
+  it('menggabungkan update hardware dan mapped yang datang beruntun dalam satu flush', () => {
+    resetAllStores();
+
+    useRobotStore.getState().setHardware({
+      ...updatedHardwareFixture,
+      waist: 95,
+    });
+    useRobotStore.getState().setHardware(updatedHardwareFixture);
+    useRobotStore.getState().setMapped(updatedMappedFixture);
+    flushRobotStoreUpdates();
+
+    const state = useRobotStore.getState();
+
+    expect(state.hardware.waist).toBe(100);
+    expect(state.mapped.wrist_roll_pivot).toBe(Math.PI / 6);
   });
 
   it('mengelola ui state untuk mode kontrol dan panel', () => {

@@ -113,7 +113,7 @@ Membangun aplikasi Digital Twin untuk Robotic Arm 5 DOF (robotic_v4) yang memung
 - [x] Definisikan event untuk status koneksi hardware.
 - [x] Definisikan event untuk command dari UI ke backend.
 - [x] Tambahkan test integrasi untuk hub contract.
-- [ ] Tambahkan throttling update agar UI tetap stabil.
+- [x] Tambahkan throttling update agar UI tetap stabil.
 
 ## 9. Testing Strategy
 

@@ -1,5 +1,5 @@
 import { useConnectivityStore } from '../../stores/connectivityStore';
-import { useRobotStore } from '../../stores/robotStore';
+import { cancelRobotStoreUpdates, useRobotStore } from '../../stores/robotStore';
 import { useUiStore } from '../../stores/uiStore';
 import {
   defaultHardwareFixture,
@@ -7,6 +7,8 @@ import {
 } from '../fixtures/storeFixtures';
 
 export function resetAllStores() {
+  cancelRobotStoreUpdates();
+
   useRobotStore.setState({
     hardware: defaultHardwareFixture,
     mapped: defaultMappedFixture,

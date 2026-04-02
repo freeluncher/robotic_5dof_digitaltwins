@@ -3,6 +3,8 @@ import { create } from 'zustand';
 import type { JointPivotMappingOutput } from '../../../../shared/contracts/joint-pivot-mapping-output';
 import type { RawHardwareData } from '../../../../shared/contracts/raw-hardware-data';
 
+const ROBOT_UPDATE_THROTTLE_MS = 16;
+
 const defaultHardware: RawHardwareData = {
   waist: 90,
   shoulder: 90,
@@ -26,9 +28,68 @@ type RobotState = {
   setMapped: (next: JointPivotMappingOutput) => void;
 };
 
+let pendingHardware: RawHardwareData | null = null;
+let pendingMapped: JointPivotMappingOutput | null = null;
+let pendingFlushHandle: ReturnType<typeof setTimeout> | null = null;
+
+function flushRobotUpdates() {
+  const nextState: Partial<Pick<RobotState, 'hardware' | 'mapped'>> = {};
+
+  if (pendingHardware !== null) {
+    nextState.hardware = pendingHardware;
+  }
+
+  if (pendingMapped !== null) {
+    nextState.mapped = pendingMapped;
+  }
+
+  pendingHardware = null;
+  pendingMapped = null;
+
+  if (Object.keys(nextState).length > 0) {
+    useRobotStore.setState(nextState);
+  }
+}
+
+function scheduleRobotUpdateFlush() {
+  if (pendingFlushHandle !== null) {
+    return;
+  }
+
+  pendingFlushHandle = setTimeout(() => {
+    pendingFlushHandle = null;
+    flushRobotUpdates();
+  }, ROBOT_UPDATE_THROTTLE_MS);
+}
+
+export function flushRobotStoreUpdates() {
+  if (pendingFlushHandle !== null) {
+    clearTimeout(pendingFlushHandle);
+    pendingFlushHandle = null;
+  }
+
+  flushRobotUpdates();
+}
+
+export function cancelRobotStoreUpdates() {
+  if (pendingFlushHandle !== null) {
+    clearTimeout(pendingFlushHandle);
+    pendingFlushHandle = null;
+  }
+
+  pendingHardware = null;
+  pendingMapped = null;
+}
+
 export const useRobotStore = create<RobotState>((set) => ({
   hardware: defaultHardware,
   mapped: defaultMapped,
-  setHardware: (next) => set({ hardware: next }),
-  setMapped: (next) => set({ mapped: next }),
+  setHardware: (next) => {
+    pendingHardware = next;
+    scheduleRobotUpdateFlush();
+  },
+  setMapped: (next) => {
+    pendingMapped = next;
+    scheduleRobotUpdateFlush();
+  },
 }));
