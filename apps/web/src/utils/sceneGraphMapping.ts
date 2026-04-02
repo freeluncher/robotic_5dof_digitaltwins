@@ -19,12 +19,25 @@ const tempAxisParent = new Vector3();
 const tempWristQuaternion = new Quaternion();
 const GEAR_BISECTOR_YZ_AXIS = new Vector3(0, 1, 1).normalize();
 const tempGearDeltaQuaternion = new Quaternion();
+const GRIPPER_COUPLING_RATIO = 1;
 
 const GRIPPER_NEUTRAL_DEG = 90;
 
 function applyAxisAngleInParentSpace(node: Object3D, axisInParentSpace: Vector3, angle: number): void {
   tempWristQuaternion.setFromAxisAngle(axisInParentSpace, angle);
   node.quaternion.copy(tempWristQuaternion);
+}
+
+function applyBisectorRotationWithBase(node: Object3D, angleRad: number, baseKey: string): void {
+  const baseQuaternion =
+    (node.userData[baseKey] as Quaternion | undefined) ?? node.quaternion.clone();
+
+  if (!node.userData[baseKey]) {
+    node.userData[baseKey] = baseQuaternion;
+  }
+
+  tempGearDeltaQuaternion.setFromAxisAngle(GEAR_BISECTOR_YZ_AXIS, angleRad);
+  node.quaternion.copy(baseQuaternion).multiply(tempGearDeltaQuaternion);
 }
 
 function applyWristRollByLink2Normal(root: Object3D, mappedRoll: number): boolean {
@@ -122,33 +135,47 @@ export function applyGripperGearRotation(root: Object3D, gripperDeg: number): bo
   const gearRightPivot = root.getObjectByName('gear_r_pivot');
   const gearLeft = root.getObjectByName('gear_l');
   const gearRight = root.getObjectByName('gear_r');
+  const connectionLeftPivot = root.getObjectByName('connection_link_l_pivot');
+  const connectionRightPivot = root.getObjectByName('connection_link_r_pivot');
+  const connectionLeft = root.getObjectByName('gripper_connecting_link_l');
+  const connectionRight = root.getObjectByName('gripper_connecting_link_r');
+  const gripperLeftPivot = root.getObjectByName('gripper_l_pivot');
+  const gripperRightPivot = root.getObjectByName('gripper_r_pivot');
+  const gripperLeft = root.getObjectByName('gripper_l');
+  const gripperRight = root.getObjectByName('gripper_r');
 
   const leftTarget = gearLeftPivot ?? gearLeft;
   const rightTarget = gearRightPivot ?? gearRight;
+  const connectionLeftTarget = connectionLeftPivot ?? connectionLeft;
+  const connectionRightTarget = connectionRightPivot ?? connectionRight;
+  const gripperLeftTarget = gripperLeftPivot ?? gripperLeft;
+  const gripperRightTarget = gripperRightPivot ?? gripperRight;
 
   if (!leftTarget || !rightTarget) {
     return false;
   }
 
   const angleRad = ((gripperDeg - GRIPPER_NEUTRAL_DEG) * Math.PI) / 180;
-  const leftBase =
-    (leftTarget.userData.__gearBaseQuaternion as Quaternion | undefined) ??
-    leftTarget.quaternion.clone();
-  if (!leftTarget.userData.__gearBaseQuaternion) {
-    leftTarget.userData.__gearBaseQuaternion = leftBase;
+  applyBisectorRotationWithBase(leftTarget, angleRad, '__gearBaseQuaternion');
+  applyBisectorRotationWithBase(rightTarget, -angleRad, '__gearBaseQuaternion');
+
+  if (connectionLeftTarget) {
+    applyBisectorRotationWithBase(connectionLeftTarget, angleRad, '__connectionBaseQuaternion');
   }
 
-  const rightBase =
-    (rightTarget.userData.__gearBaseQuaternion as Quaternion | undefined) ??
-    rightTarget.quaternion.clone();
-  if (!rightTarget.userData.__gearBaseQuaternion) {
-    rightTarget.userData.__gearBaseQuaternion = rightBase;
+  if (connectionRightTarget) {
+    applyBisectorRotationWithBase(connectionRightTarget, -angleRad, '__connectionBaseQuaternion');
   }
 
-  tempGearDeltaQuaternion.setFromAxisAngle(GEAR_BISECTOR_YZ_AXIS, angleRad);
-  leftTarget.quaternion.copy(leftBase).multiply(tempGearDeltaQuaternion);
+  // Parallel gripper coupling: when gears open outward, fingers rotate inward gradually.
+  const gripperAngle = angleRad * GRIPPER_COUPLING_RATIO;
+  if (gripperLeftTarget) {
+    applyBisectorRotationWithBase(gripperLeftTarget, -gripperAngle, '__gripperBaseQuaternion');
+  }
 
-  tempGearDeltaQuaternion.setFromAxisAngle(GEAR_BISECTOR_YZ_AXIS, -angleRad);
-  rightTarget.quaternion.copy(rightBase).multiply(tempGearDeltaQuaternion);
+  if (gripperRightTarget) {
+    applyBisectorRotationWithBase(gripperRightTarget, gripperAngle, '__gripperBaseQuaternion');
+  }
+
   return true;
 }

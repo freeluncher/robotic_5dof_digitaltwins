@@ -115,17 +115,36 @@ describe('scene graph joint mapping', () => {
     const root = createNode('robotic_v4') as Group;
     const gearLPivot = createNode('gear_l_pivot');
     const gearRPivot = createNode('gear_r_pivot');
+    const connectionLPivot = createNode('connection_link_l_pivot');
+    const connectionRPivot = createNode('connection_link_r_pivot');
+    const gripperLPivot = createNode('gripper_l_pivot');
+    const gripperRPivot = createNode('gripper_r_pivot');
     const gearL = createNode('gear_l');
     const gearR = createNode('gear_r');
+    const connectionL = createNode('gripper_connecting_link_l');
+    const connectionR = createNode('gripper_connecting_link_r');
+    const gripperL = createNode('gripper_l');
+    const gripperR = createNode('gripper_r');
     root.add(gearLPivot);
     root.add(gearRPivot);
+    root.add(connectionLPivot);
+    root.add(connectionRPivot);
+    root.add(gripperLPivot);
+    root.add(gripperRPivot);
     gearLPivot.add(gearL);
     gearRPivot.add(gearR);
+    connectionLPivot.add(connectionL);
+    connectionRPivot.add(connectionR);
+    gripperLPivot.add(gripperL);
+    gripperRPivot.add(gripperR);
 
     const applied = applyGripperGearRotation(root, 120);
     const halfAngleSin = Math.sin(Math.PI / 12);
     const halfAngleCos = Math.cos(Math.PI / 12);
     const bisectorComponent = halfAngleSin / Math.sqrt(2);
+    const gripperHalfAngleSin = Math.sin((Math.PI / 6) * 0.45 * 0.5);
+    const gripperHalfAngleCos = Math.cos((Math.PI / 6) * 0.45 * 0.5);
+    const gripperBisectorComponent = gripperHalfAngleSin / Math.sqrt(2);
 
     expect(applied).toBe(true);
     expect(gearLPivot.quaternion.x).toBeCloseTo(0, 12);
@@ -138,7 +157,32 @@ describe('scene graph joint mapping', () => {
     expect(gearRPivot.quaternion.z).toBeCloseTo(-bisectorComponent, 12);
     expect(gearRPivot.quaternion.w).toBeCloseTo(halfAngleCos, 12);
 
+    expect(connectionLPivot.quaternion.x).toBeCloseTo(0, 12);
+    expect(connectionLPivot.quaternion.y).toBeCloseTo(bisectorComponent, 12);
+    expect(connectionLPivot.quaternion.z).toBeCloseTo(bisectorComponent, 12);
+    expect(connectionLPivot.quaternion.w).toBeCloseTo(halfAngleCos, 12);
+
+    expect(connectionRPivot.quaternion.x).toBeCloseTo(0, 12);
+    expect(connectionRPivot.quaternion.y).toBeCloseTo(-bisectorComponent, 12);
+    expect(connectionRPivot.quaternion.z).toBeCloseTo(-bisectorComponent, 12);
+    expect(connectionRPivot.quaternion.w).toBeCloseTo(halfAngleCos, 12);
+
+    // Inward finger motion: opposite sign from same-side gear and scaled down by coupling ratio.
+    expect(gripperLPivot.quaternion.x).toBeCloseTo(0, 12);
+    expect(gripperLPivot.quaternion.y).toBeCloseTo(-gripperBisectorComponent, 12);
+    expect(gripperLPivot.quaternion.z).toBeCloseTo(-gripperBisectorComponent, 12);
+    expect(gripperLPivot.quaternion.w).toBeCloseTo(gripperHalfAngleCos, 12);
+
+    expect(gripperRPivot.quaternion.x).toBeCloseTo(0, 12);
+    expect(gripperRPivot.quaternion.y).toBeCloseTo(gripperBisectorComponent, 12);
+    expect(gripperRPivot.quaternion.z).toBeCloseTo(gripperBisectorComponent, 12);
+    expect(gripperRPivot.quaternion.w).toBeCloseTo(gripperHalfAngleCos, 12);
+
     expect(gearL.rotation.y).toBe(0);
     expect(gearR.rotation.y).toBe(0);
+    expect(connectionL.rotation.y).toBe(0);
+    expect(connectionR.rotation.y).toBe(0);
+    expect(gripperL.rotation.y).toBe(0);
+    expect(gripperR.rotation.y).toBe(0);
   });
 });
