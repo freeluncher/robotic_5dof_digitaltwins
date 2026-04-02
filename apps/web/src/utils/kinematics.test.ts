@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   degreeToRadianCases,
   hardwareFixtureLinear,
-} from '../test/fixtures/kinematicsFixtures';
+} from '../tests/fixtures/kinematicsFixtures';
 import { convertToRadians, mapHardwareToPivot } from './kinematics';
 
 /**

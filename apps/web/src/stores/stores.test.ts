@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
 
-import { resetAllStores } from '../test/helpers/storeTestHelpers';
+import { resetAllStores } from '../tests/helpers/storeTestHelpers';
 import {
   defaultHardwareFixture,
   defaultMappedFixture,
   updatedHardwareFixture,
   updatedMappedFixture,
-} from '../test/fixtures/storeFixtures';
+} from '../tests/fixtures/storeFixtures';
 import { useConnectivityStore } from './connectivityStore';
 import { useRobotStore } from './robotStore';
 import { useUiStore } from './uiStore';

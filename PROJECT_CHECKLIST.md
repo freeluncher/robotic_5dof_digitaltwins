@@ -75,7 +75,7 @@ Membangun aplikasi Digital Twin untuk Robotic Arm 5 DOF (robotic_v4) yang memung
 - [x] Siapkan konfigurasi Vitest.
 - [x] Siapkan setup file test frontend.
 - [x] Tambahkan test helper dan fixture data untuk state dan kinematics.
-- [ ] Buat struktur folder frontend untuk components, hooks, stores, utils, dan tests.
+- [x] Buat struktur folder frontend untuk components, hooks, stores, utils, dan tests.
 - [ ] Tambahkan halaman awal untuk visualisasi digital twin.
 
 ## 5. Modul Kinematics Utility

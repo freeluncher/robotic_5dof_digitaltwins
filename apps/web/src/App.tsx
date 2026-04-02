@@ -1,22 +1,18 @@
-import { useConnectivityStore } from './stores/connectivityStore';
-import { useRobotStore } from './stores/robotStore';
-import { useUiStore } from './stores/uiStore';
+import { StatusCard } from './components/StatusCard';
+import { useDigitalTwinStatus } from './hooks/useDigitalTwinStatus';
 
 function App() {
-  const controlMode = useUiStore((state) => state.controlMode);
-  const isConnected = useConnectivityStore((state) => state.isConnected);
-  const transport = useConnectivityStore((state) => state.transport);
-  const waist = useRobotStore((state) => state.hardware.waist);
+  const { controlMode, connectionLabel, transport, waist } = useDigitalTwinStatus();
 
   return (
     <main className="app-shell">
       <h1>Robotic V4 Digital Twin</h1>
       <p>React + Vite scaffold is ready for kinematics, Zustand, and 3D integration.</p>
       <ul className="status-list">
-        <li>Control mode: {controlMode}</li>
-        <li>Connection: {isConnected ? 'connected' : 'disconnected'}</li>
-        <li>Transport: {transport}</li>
-        <li>Waist hardware angle: {waist}</li>
+        <StatusCard title="Control mode" value={controlMode} />
+        <StatusCard title="Connection" value={connectionLabel} />
+        <StatusCard title="Transport" value={transport} />
+        <StatusCard title="Waist hardware angle" value={waist} />
       </ul>
     </main>
   );
