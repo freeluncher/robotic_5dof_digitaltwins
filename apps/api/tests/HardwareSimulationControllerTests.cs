@@ -104,6 +104,58 @@ public class HardwareSimulationControllerTests : IClassFixture<WebApplicationFac
         Assert.False(stoppedEnvelope.Payload.IsConnected);
     }
 
+    [Fact]
+    public async Task Simulator_mode_emits_disconnect_then_reconnect_connection_state_events()
+    {
+        using var client = _factory.CreateClient();
+        await EnsureStopped(client);
+
+        var connectionStateChannel = Channel.CreateUnbounded<SignalREventEnvelope<TelemetryConnectionStatePayload>>();
+
+        await using var connection = CreateHubConnection();
+
+        connection.On<SignalREventEnvelope<TelemetryConnectionStatePayload>>(nameof(IRobotTelemetryClient.TelemetryConnectionStateChanged), envelope =>
+        {
+            connectionStateChannel.Writer.TryWrite(envelope);
+        });
+
+        await connection.StartAsync();
+
+        using var firstStartResponse = await client.PostAsJsonAsync(
+            "/api/hardware/simulator/start",
+            new HardwareSimulationController.StartSimulationRequest(30));
+
+        Assert.Equal(HttpStatusCode.OK, firstStartResponse.StatusCode);
+
+        var startedEnvelope = await ReadUntil(
+            connectionStateChannel.Reader,
+            envelope => envelope.Payload.Transport == "simulator" && envelope.Payload.Reason == "dev-simulator-started");
+
+        using var stopResponse = await client.PostAsync("/api/hardware/simulator/stop", null);
+        Assert.Equal(HttpStatusCode.OK, stopResponse.StatusCode);
+
+        var stoppedEnvelope = await ReadUntil(
+            connectionStateChannel.Reader,
+            envelope => envelope.Payload.Transport == "simulator" && envelope.Payload.Reason == "dev-simulator-stopped");
+
+        using var secondStartResponse = await client.PostAsJsonAsync(
+            "/api/hardware/simulator/start",
+            new HardwareSimulationController.StartSimulationRequest(30));
+
+        Assert.Equal(HttpStatusCode.OK, secondStartResponse.StatusCode);
+
+        var restartedEnvelope = await ReadUntil(
+            connectionStateChannel.Reader,
+            envelope => envelope.Payload.Transport == "simulator" && envelope.Payload.Reason == "dev-simulator-started" && envelope.TimestampUtc > stoppedEnvelope.TimestampUtc);
+
+        Assert.True(startedEnvelope.Payload.IsConnected);
+        Assert.False(stoppedEnvelope.Payload.IsConnected);
+        Assert.True(restartedEnvelope.Payload.IsConnected);
+
+        using var finalStopResponse = await client.PostAsync("/api/hardware/simulator/stop", null);
+        Assert.Equal(HttpStatusCode.OK, finalStopResponse.StatusCode);
+    }
+
     private static async Task EnsureStopped(HttpClient client)
     {
         await client.PostAsync("/api/hardware/simulator/stop", null);

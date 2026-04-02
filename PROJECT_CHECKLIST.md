@@ -143,7 +143,7 @@ Membangun aplikasi Digital Twin untuk Robotic Arm 5 DOF (robotic_v4) yang memung
 - [x] Implementasikan koneksi hardware ke backend.
 - [x] Verifikasi mapping data hardware ke joint robot.
 - [x] Tambahkan simulasi data untuk mode development tanpa hardware.
-- [ ] Tambahkan test untuk kondisi hardware disconnect dan reconnect.
+- [x] Tambahkan test untuk kondisi hardware disconnect dan reconnect.
 
 ## 12. UI Operasional
 
