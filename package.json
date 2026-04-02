@@ -1,0 +1,26 @@
+{
+  "name": "robotic-v4-monorepo",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "build": "npm run build:web && npm run build:api",
+    "build:web": "npm run build --prefix apps/web",
+    "build:api": "dotnet build apps/api/src/robotic_v4.Api.csproj --nologo",
+    "test": "npm run test:web && npm run test:api",
+    "test:web": "npm run test --prefix apps/web -- --run",
+    "test:api": "dotnet test apps/api/tests/robotic_v4.Api.Tests.csproj --nologo",
+    "lint": "npm run lint:web && npm run lint:api",
+    "lint:web": "eslint apps/web --ext .ts,.tsx",
+    "lint:api": "dotnet build apps/api/src/robotic_v4.Api.csproj --nologo -warnaserror && dotnet build apps/api/tests/robotic_v4.Api.Tests.csproj --nologo -warnaserror",
+    "lint:fix": "npm run lint:web -- --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.23.0",
+    "eslint": "^9.23.0",
+    "globals": "^15.15.0",
+    "prettier": "^3.5.3",
+    "typescript-eslint": "^8.29.0"
+  }
+}

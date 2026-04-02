@@ -1,0 +1,9 @@
+node_modules/
+dist/
+coverage/
+bin/
+obj/
+apps/**/node_modules/
+apps/**/dist/
+apps/**/coverage/
+*.glb

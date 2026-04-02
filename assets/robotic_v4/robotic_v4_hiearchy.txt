@@ -1,0 +1,39 @@
+Blender Scene Structure Tree
+==============================
+
+- robotic_v4 [EMPTY] (Pos: X:0.000, Y:0.000, Z:0.000)
+  - base
+    - servo_waist
+      - shaft_servo_waist
+    - waist_pivot [EMPTY] (Pos: X:-0.000, Y:-0.000, Z:56.000)
+      - shoulder_pivot [EMPTY] (Pos: X:-2.803, Y:-13.661, Z:96.280)
+        - link1
+          - elbow_pivot [EMPTY] (Pos: X:-16.000, Y:-85.000, Z:192.000)
+            - link2
+              - servo_elbow
+                - shaft_servo_elbow
+              - servo_wrist_roll
+                - shaft_servo_wrist_roll
+              - wrist_roll_pivot [EMPTY] (Pos: X:-29.701, Y:-153.283, Z:132.812)
+                - link3
+                  - servo_wrist
+                    - shaft_servo_wrist
+                  - wrist_pivot [EMPTY] (Pos: X:-52.405, Y:-163.622, Z:111.529)
+                    - wrist
+                      - connection_link_l_pivot [EMPTY] (Pos: X:-59.681, Y:-215.890, Z:82.505)
+                        - gripper_connecting_link_l
+                      - connection_link_r_pivot [EMPTY] (Pos: X:-69.532, Y:-214.183, Z:82.076)
+                        - gripper_connecting_link_r
+                      - gear_l_pivot [EMPTY] (Pos: X:-50.397, Y:-205.043, Z:98.986)
+                        - gear_l
+                          - gripper_l_pivot [EMPTY] (Pos: X:-48.267, Y:-222.440, Z:72.698)
+                            - gripper_l
+                      - gear_r_pivot [EMPTY] (Pos: X:-76.878, Y:-200.457, Z:97.833)
+                        - gear_r
+                          - gripper_r_pivot [EMPTY] (Pos: X:-78.648, Y:-217.362, Z:71.201)
+                            - gripper_r
+                      - servo_gripper
+                        - shaft_servo_gripper
+      - waist
+        - servo_shoulder
+          - shaft_servo_shoulder
