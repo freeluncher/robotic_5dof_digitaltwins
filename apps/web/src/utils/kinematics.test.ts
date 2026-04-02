@@ -98,10 +98,19 @@ it('menerima edge case minimum 0° dan maksimum 180° untuk semua joint', () => 
   expect(mappedMin.wrist_pivot).toBe(0);
 
   expect(mappedMax.waist_pivot).toBe(Math.PI);
-  expect(mappedMax.shoulder_pivot).toBe(Math.PI);
+  expect(mappedMax.shoulder_pivot).toBeCloseTo(convertToRadians(167), 12);
   expect(mappedMax.elbow_pivot).toBe(Math.PI);
   expect(mappedMax.wrist_roll_pivot).toBe(Math.PI);
   expect(mappedMax.wrist_pivot).toBe(Math.PI);
+});
+
+it('membatasi shoulder pada 167° untuk mencegah tabrakan dengan base', () => {
+  const mapped = mapHardwareToPivot({
+    ...hardwareFixtureLinear,
+    shoulder: 180,
+  });
+
+  expect(mapped.shoulder_pivot).toBeCloseTo(convertToRadians(167), 12);
 });
 
 /**

@@ -14,7 +14,7 @@ export type RotationMapping = {
 export const ROTATION_MAPPING_BY_PIVOT: Record<MainPivotName, RotationMapping> = {
   waist_pivot: { axis: 'y', direction: 1 },
   shoulder_pivot: { axis: 'x', direction: 1 },
-  elbow_pivot: { axis: 'x', direction: 1 },
+  elbow_pivot: { axis: 'x', direction: -1 },
   wrist_roll_pivot: { axis: 'y', direction: 1 },
   wrist_pivot: { axis: 'x', direction: 1 },
 };

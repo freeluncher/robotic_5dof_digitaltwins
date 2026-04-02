@@ -4,6 +4,7 @@ export type JointField = keyof RawHardwareData;
 
 const HARDWARE_MIN = 0;
 const HARDWARE_MAX = 180;
+const SHOULDER_MAX = 167;
 const GRIPPER_MIN = 90;
 const GRIPPER_MAX = 180;
 
@@ -20,9 +21,12 @@ export function withJointAngle(
   joint: JointField,
   nextAngle: number,
 ): RawHardwareData {
+  const clamped = clampHardwareAngle(nextAngle);
+  const limited = joint === 'shoulder' ? Math.min(SHOULDER_MAX, clamped) : clamped;
+
   return {
     ...hardware,
-    [joint]: clampHardwareAngle(nextAngle),
+    [joint]: limited,
   };
 }
 

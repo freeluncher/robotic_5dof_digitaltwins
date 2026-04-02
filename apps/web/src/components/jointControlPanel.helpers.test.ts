@@ -24,6 +24,13 @@ describe('joint control panel helpers', () => {
     expect(next.wrist).toBe(90);
   });
 
+  it('limits shoulder to 167 degrees to prevent base collision', () => {
+    const initial = neutralHardwareAngles();
+    const next = withJointAngle(initial, 'shoulder', 180);
+
+    expect(next.shoulder).toBe(167);
+  });
+
   it('returns neutral angles at 90 degrees for all joints', () => {
     expect(neutralHardwareAngles()).toEqual({
       waist: 90,
