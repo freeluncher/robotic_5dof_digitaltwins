@@ -2,6 +2,35 @@
 
 Folder ini menyimpan kontrak yang dipakai bersama frontend dan backend.
 
+## Kontrak yang Sudah Didefinisikan
+
+- RawHardwareData:
+	- TypeScript: `raw-hardware-data.ts`
+	- JSON Schema: `raw-hardware-data.schema.json`
+	- C#: `RawHardwareData.cs`
+
+### RawHardwareData Shape
+
+Payload ini merepresentasikan input hardware 5 DOF dalam derajat (envelope hardware 0..180):
+
+```json
+{
+	"waist": 90,
+	"shoulder": 45,
+	"elbow": 110,
+	"wristRoll": 80,
+	"wrist": 70
+}
+```
+
+Mapping ke pivot scene:
+
+- `waist` -> `waist_pivot`
+- `shoulder` -> `shoulder_pivot`
+- `elbow` -> `elbow_pivot`
+- `wristRoll` -> `wrist_roll_pivot`
+- `wrist` -> `wrist_pivot`
+
 ## Isi yang Disarankan
 
 - DTO atau shape payload yang konsisten antara apps/web dan apps/api.

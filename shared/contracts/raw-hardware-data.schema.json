@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://freeluncher.github.io/robotic_5dof_digitaltwins/contracts/raw-hardware-data.schema.json",
+  "title": "RawHardwareData",
+  "description": "Hardware input envelope for robotic_v4 5 DOF joints in degrees.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "waist",
+    "shoulder",
+    "elbow",
+    "wristRoll",
+    "wrist"
+  ],
+  "properties": {
+    "waist": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 180,
+      "description": "J1 / waist_pivot angle in degrees from hardware."
+    },
+    "shoulder": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 180,
+      "description": "J2 / shoulder_pivot angle in degrees from hardware."
+    },
+    "elbow": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 180,
+      "description": "J3 / elbow_pivot angle in degrees from hardware."
+    },
+    "wristRoll": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 180,
+      "description": "J4 / wrist_roll_pivot angle in degrees from hardware."
+    },
+    "wrist": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 180,
+      "description": "J5 / wrist_pivot angle in degrees from hardware."
+    }
+  }
+}
