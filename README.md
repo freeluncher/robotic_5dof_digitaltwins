@@ -8,6 +8,16 @@ The project integrates:
 - Real-time backend API (.NET 8 + SignalR)
 - Shared contracts used by both frontend and backend
 
+## Project Preview
+
+### Main viewport and control panel
+
+![Robotic V4 viewport and control panel](preview_robotic_v4.png)
+
+### Full-page application layout
+
+![Robotic V4 full-page app preview](preview_web.png)
+
 ## Current Status
 
 The project is beyond the initial scaffold stage. Major implemented capabilities include:
