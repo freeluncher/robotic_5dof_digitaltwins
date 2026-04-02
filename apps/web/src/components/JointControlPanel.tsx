@@ -23,6 +23,10 @@ const JOINT_CONTROLS: JointControlConfig[] = [
   { field: 'wrist', label: 'Wrist Pitch (J5)' },
 ];
 
+const JOINT_MAX_BY_FIELD: Partial<Record<JointField, number>> = {
+  shoulder: 167,
+};
+
 export function JointControlPanel() {
   const controlMode = useUiStore((state) => state.controlMode);
   const setControlMode = useUiStore((state) => state.setControlMode);
@@ -75,7 +79,7 @@ export function JointControlPanel() {
               <input
                 type="range"
                 min={0}
-                max={180}
+                max={JOINT_MAX_BY_FIELD[joint.field] ?? 180}
                 step={1}
                 value={value}
                 disabled={!isManualMode}
