@@ -66,4 +66,35 @@ public class ContractsCompatibilityTests
         Assert.Equal(SignalREventName.TelemetryJointState, envelope!.EventName);
         Assert.Equal(90, envelope.Payload.Hardware.Waist);
     }
+
+    [Fact]
+    public void SignalR_joint_angle_update_contract_deserializes_from_shared_shape()
+    {
+        const string json = """
+        {
+          "eventName": "telemetry.joint-angle.updated",
+          "messageId": "evt-angle-123",
+          "timestampUtc": "2026-04-02T07:30:00Z",
+          "source": "api",
+          "payload": {
+            "mapped": {
+              "waistPivot": 1.5708,
+              "shoulderPivot": 0.7854,
+              "elbowPivot": 1.9199,
+              "wristRollPivot": 0.3491,
+              "wristPivot": 0.2618
+            }
+          }
+        }
+        """;
+
+        var envelope = JsonSerializer.Deserialize<SignalREventEnvelope<TelemetryJointAngleUpdatePayload>>(json, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+        });
+
+        Assert.NotNull(envelope);
+        Assert.Equal(SignalREventName.TelemetryJointAngleUpdate, envelope!.EventName);
+        Assert.Equal(1.5708, envelope.Payload.Mapped.WaistPivot, 4);
+    }
 }

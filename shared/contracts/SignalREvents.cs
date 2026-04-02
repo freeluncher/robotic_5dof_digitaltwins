@@ -3,6 +3,7 @@ namespace RoboticV4.Contracts;
 public static class SignalREventName
 {
     public const string TelemetryJointState = "telemetry.joint-state.updated";
+    public const string TelemetryJointAngleUpdate = "telemetry.joint-angle.updated";
     public const string TelemetryConnectionState = "telemetry.connection.state";
     public const string ControlSetJointTargets = "control.set-joint-targets";
     public const string ControlSetGripper = "control.set-gripper";
@@ -18,6 +19,10 @@ public sealed record SignalREventEnvelope<TPayload>(
 
 public sealed record TelemetryJointStatePayload(
     RawHardwareData Hardware,
+    JointPivotMappingOutput Mapped
+);
+
+public sealed record TelemetryJointAngleUpdatePayload(
     JointPivotMappingOutput Mapped
 );
 

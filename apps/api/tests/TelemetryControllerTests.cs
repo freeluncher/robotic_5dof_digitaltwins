@@ -94,5 +94,10 @@ public class TelemetryControllerTests : IClassFixture<WebApplicationFactory<Prog
         {
             throw new InvalidOperationException("forced telemetry failure for global error middleware test");
         }
+
+        public SignalREventEnvelope<TelemetryJointAngleUpdatePayload> CreateJointAngleUpdateTelemetry(RawHardwareData hardware)
+        {
+            throw new InvalidOperationException("forced telemetry failure for global error middleware test");
+        }
     }
 }

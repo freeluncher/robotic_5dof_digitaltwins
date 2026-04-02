@@ -48,8 +48,10 @@ public sealed class TelemetryController : ControllerBase
             request.Wrist);
 
         var envelope = _telemetryService.CreateJointStateTelemetry(request);
+        var angleEnvelope = _telemetryService.CreateJointAngleUpdateTelemetry(request);
 
         await _hub.Clients.All.TelemetryJointStateUpdated(envelope);
+        await _hub.Clients.All.TelemetryJointAngleUpdated(angleEnvelope);
 
         return Ok(envelope);
     }

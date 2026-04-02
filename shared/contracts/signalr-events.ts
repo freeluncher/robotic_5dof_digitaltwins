@@ -3,6 +3,7 @@ import type { RawHardwareData } from './raw-hardware-data';
 
 export const SignalREventName = {
   TelemetryJointState: 'telemetry.joint-state.updated',
+  TelemetryJointAngleUpdate: 'telemetry.joint-angle.updated',
   TelemetryConnectionState: 'telemetry.connection.state',
   ControlSetJointTargets: 'control.set-joint-targets',
   ControlSetGripper: 'control.set-gripper',
@@ -21,6 +22,10 @@ export interface SignalREventEnvelope<TPayload> {
 
 export interface TelemetryJointStatePayload {
   hardware: RawHardwareData;
+  mapped: JointPivotMappingOutput;
+}
+
+export interface TelemetryJointAngleUpdatePayload {
   mapped: JointPivotMappingOutput;
 }
 
