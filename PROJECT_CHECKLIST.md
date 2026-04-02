@@ -76,14 +76,14 @@ Membangun aplikasi Digital Twin untuk Robotic Arm 5 DOF (robotic_v4) yang memung
 - [x] Siapkan setup file test frontend.
 - [x] Tambahkan test helper dan fixture data untuk state dan kinematics.
 - [x] Buat struktur folder frontend untuk components, hooks, stores, utils, dan tests.
-- [ ] Tambahkan halaman awal untuk visualisasi digital twin.
+- [x] Tambahkan halaman awal untuk visualisasi digital twin.
 
 ## 5. Modul Kinematics Utility
 
 - [x] Buat test RED untuk `convertToRadians(degrees: number)`.
 - [x] Buat test RED untuk `mapHardwareToPivot(data: RawHardwareData)`.
-- [ ] Implementasikan `convertToRadians`.
-- [ ] Implementasikan `mapHardwareToPivot`.
+- [x] Implementasikan `convertToRadians`.
+- [x] Implementasikan `mapHardwareToPivot`.
 - [ ] Tambahkan guard untuk nilai di luar rentang hardware.
 - [ ] Tambahkan test untuk edge case batas minimum dan maksimum tiap joint.
 - [ ] Tambahkan test untuk nilai input tidak valid seperti `null`, `undefined`, atau `NaN` jika dibutuhkan.
