@@ -5,4 +5,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>RoboticV4.Api</RootNamespace>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="../../../shared/contracts/*.cs" Link="Contracts\%(Filename)%(Extension)" />
+  </ItemGroup>
 </Project>

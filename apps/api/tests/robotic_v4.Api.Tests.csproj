@@ -24,8 +24,4 @@
   <ItemGroup>
     <ProjectReference Include="../src/robotic_v4.Api.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="../../../shared/contracts/*.cs" Link="Contracts\%(Filename)%(Extension)" />
-  </ItemGroup>
 </Project>
