@@ -1,42 +1,37 @@
 import { describe, expect, it } from 'vitest';
 
+import { resetAllStores } from '../test/helpers/storeTestHelpers';
+import {
+  defaultHardwareFixture,
+  defaultMappedFixture,
+  updatedHardwareFixture,
+  updatedMappedFixture,
+} from '../test/fixtures/storeFixtures';
 import { useConnectivityStore } from './connectivityStore';
 import { useRobotStore } from './robotStore';
 import { useUiStore } from './uiStore';
 
 describe('zustand stores setup', () => {
   it('mengelola robot state untuk hardware dan mapped pivot', () => {
+    resetAllStores();
+
     useRobotStore.setState({
-      hardware: {
-        waist: 90,
-        shoulder: 90,
-        elbow: 90,
-        wristRoll: 90,
-        wrist: 90,
-      },
-      mapped: {
-        waist_pivot: 0,
-        shoulder_pivot: 0,
-        elbow_pivot: 0,
-        wrist_roll_pivot: 0,
-        wrist_pivot: 0,
-      },
+      hardware: defaultHardwareFixture,
+      mapped: defaultMappedFixture,
     });
 
-    useRobotStore.getState().setHardware({
-      waist: 100,
-      shoulder: 80,
-      elbow: 75,
-      wristRoll: 120,
-      wrist: 60,
-    });
+    useRobotStore.getState().setHardware(updatedHardwareFixture);
+    useRobotStore.getState().setMapped(updatedMappedFixture);
 
     const state = useRobotStore.getState();
     expect(state.hardware.waist).toBe(100);
     expect(state.hardware.wristRoll).toBe(120);
+    expect(state.mapped.waist_pivot).toBe(Math.PI / 2);
   });
 
   it('mengelola ui state untuk mode kontrol dan panel', () => {
+    resetAllStores();
+
     useUiStore.setState({ controlMode: 'manual', panelOpen: true });
 
     useUiStore.getState().setControlMode('live');
@@ -48,6 +43,8 @@ describe('zustand stores setup', () => {
   });
 
   it('mengelola connectivity state untuk status koneksi dan transport', () => {
+    resetAllStores();
+
     useConnectivityStore.setState({
       isConnected: false,
       transport: 'simulator',

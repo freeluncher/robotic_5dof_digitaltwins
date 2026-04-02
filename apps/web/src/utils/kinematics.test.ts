@@ -1,22 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
+import {
+  degreeToRadianCases,
+  hardwareFixtureLinear,
+} from '../test/fixtures/kinematicsFixtures';
 import { convertToRadians, mapHardwareToPivot } from './kinematics';
-
-type RawHardwareData = {
-  waist: number;
-  shoulder: number;
-  elbow: number;
-  wristRoll: number;
-  wrist: number;
-};
-
-const hardwareSample: RawHardwareData = {
-  waist: 0,
-  shoulder: 45,
-  elbow: 90,
-  wristRoll: 135,
-  wrist: 180,
-};
 
 /**
  * waist_pivot, shoulder_pivot, elbow_pivot, wrist_roll_pivot, dan wrist_pivot semuanya masih berada di envelope hardware 0°-180°.
@@ -24,9 +12,9 @@ const hardwareSample: RawHardwareData = {
  */
 describe('convertToRadians', () => {
   it('mengonversi derajat ke radian secara linear untuk envelope hardware 0°-180°', () => {
-    expect(convertToRadians(0)).toBe(0);
-    expect(convertToRadians(90)).toBe(Math.PI / 2);
-    expect(convertToRadians(180)).toBe(Math.PI);
+    degreeToRadianCases.forEach(({ degrees, expected }) => {
+      expect(convertToRadians(degrees)).toBe(expected);
+    });
   });
 });
 
@@ -35,9 +23,9 @@ describe('convertToRadians', () => {
  * Kasus ini memverifikasi bahwa nilai waist tidak tertukar dengan shoulder_pivot atau joint lain.
  */
 it('memetakan data waist ke waist_pivot pada batas aman 0°-180°', () => {
-  const mapped = mapHardwareToPivot(hardwareSample);
+  const mapped = mapHardwareToPivot(hardwareFixtureLinear);
 
-  expect(mapped.waist_pivot).toBe(convertToRadians(hardwareSample.waist));
+  expect(mapped.waist_pivot).toBe(convertToRadians(hardwareFixtureLinear.waist));
 });
 
 /**
@@ -45,9 +33,9 @@ it('memetakan data waist ke waist_pivot pada batas aman 0°-180°', () => {
  * Kasus ini menjaga agar nilai shoulder tidak bocor ke waist_pivot, elbow_pivot, atau wrist chain.
  */
 it('memetakan data shoulder ke shoulder_pivot pada batas aman 0°-180°', () => {
-  const mapped = mapHardwareToPivot(hardwareSample);
+  const mapped = mapHardwareToPivot(hardwareFixtureLinear);
 
-  expect(mapped.shoulder_pivot).toBe(convertToRadians(hardwareSample.shoulder));
+  expect(mapped.shoulder_pivot).toBe(convertToRadians(hardwareFixtureLinear.shoulder));
 });
 
 /**
@@ -55,9 +43,9 @@ it('memetakan data shoulder ke shoulder_pivot pada batas aman 0°-180°', () => 
  * Kasus ini memastikan input elbow tidak bergeser ke joint wrist.
  */
 it('memetakan data elbow ke elbow_pivot pada batas aman 0°-180°', () => {
-  const mapped = mapHardwareToPivot(hardwareSample);
+  const mapped = mapHardwareToPivot(hardwareFixtureLinear);
 
-  expect(mapped.elbow_pivot).toBe(convertToRadians(hardwareSample.elbow));
+  expect(mapped.elbow_pivot).toBe(convertToRadians(hardwareFixtureLinear.elbow));
 });
 
 /**
@@ -65,9 +53,9 @@ it('memetakan data elbow ke elbow_pivot pada batas aman 0°-180°', () => {
  * Kasus ini penting karena wrist roll sering memiliki ambang mekanik yang paling sensitif di ujung lengan.
  */
 it('memetakan data wristRoll ke wrist_roll_pivot pada batas aman 0°-180°', () => {
-  const mapped = mapHardwareToPivot(hardwareSample);
+  const mapped = mapHardwareToPivot(hardwareFixtureLinear);
 
-  expect(mapped.wrist_roll_pivot).toBe(convertToRadians(hardwareSample.wristRoll));
+  expect(mapped.wrist_roll_pivot).toBe(convertToRadians(hardwareFixtureLinear.wristRoll));
 });
 
 /**
@@ -75,7 +63,7 @@ it('memetakan data wristRoll ke wrist_roll_pivot pada batas aman 0°-180°', () 
  * Kasus ini memastikan rotasi terminal hanya mengenai pivot wrist yang benar.
  */
 it('memetakan data wrist ke wrist_pivot pada batas aman 0°-180°', () => {
-  const mapped = mapHardwareToPivot(hardwareSample);
+  const mapped = mapHardwareToPivot(hardwareFixtureLinear);
 
-  expect(mapped.wrist_pivot).toBe(convertToRadians(hardwareSample.wrist));
+  expect(mapped.wrist_pivot).toBe(convertToRadians(hardwareFixtureLinear.wrist));
 });
