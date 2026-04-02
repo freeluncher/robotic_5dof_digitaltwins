@@ -4,6 +4,7 @@
 .DS_Store
 Thumbs.db
 Desktop.ini
+notes/
 
 # VS Code local workspace files
 .vscode/*.code-workspace
