@@ -1,4 +1,5 @@
 import { ROBOTIC_V4_GLB_URL } from './assets/modelAssets';
+import { ConnectionStatusIndicator } from './components/ConnectionStatusIndicator';
 import { JointControlPanel } from './components/JointControlPanel';
 import { RobotScene } from './components/RobotScene';
 import { StatusCard } from './components/StatusCard';
@@ -11,11 +12,18 @@ function App() {
   return (
     <main className="app-shell">
       <header className="hero">
-        <h1>Robotic V4 Digital Twin</h1>
-        <p>
-          Initial visualization page is ready. This viewport will host the GLB model and pivot
-          animation in the next integration phase.
-        </p>
+        <div className="hero-header-row">
+          <div>
+            <h1>Robotic V4 Digital Twin</h1>
+            <p>
+              Initial visualization page is ready. This viewport will host the GLB model and pivot
+              animation in the next integration phase.
+            </p>
+          </div>
+          <div className="hero-connection-status">
+            <ConnectionStatusIndicator />
+          </div>
+        </div>
       </header>
 
       <section className="visualization-layout" aria-label="Digital twin initial visualization">
