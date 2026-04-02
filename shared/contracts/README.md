@@ -14,6 +14,11 @@ Folder ini menyimpan kontrak yang dipakai bersama frontend dan backend.
 	- JSON Schema: `esp32-hardware-input.schema.json`
 	- C#: `Esp32HardwareInput.cs`
 
+- FirmwareSerializedPacket:
+	- TypeScript: `firmware-serialized-packet.ts`
+	- JSON Schema: `firmware-serialized-packet.schema.json`
+	- C#: `FirmwareSerializedPacket.cs`
+
 - JointPivotMappingOutput:
 	- TypeScript: `joint-pivot-mapping-output.ts`
 	- JSON Schema: `joint-pivot-mapping-output.schema.json`
@@ -77,6 +82,31 @@ Catatan:
 - `sequence` dipakai untuk deteksi paket hilang/duplikat di layer backend.
 - `sentAtUtc` memudahkan tracing latency dari perangkat ke API.
 - `payload` memakai shape `RawHardwareData` agar mapping kinematics tetap reusable.
+
+### FirmwareSerializedPacket Shape
+
+Payload ini adalah format data serialisasi dari firmware ke backend transport gateway. Tujuannya agar framing stream serial/WiFi punya kontrak tetap.
+
+```json
+{
+	"protocol": "robotic-v4.telemetry.v1",
+	"contentType": "application/json",
+	"encoding": "utf-8",
+	"framing": "jsonl",
+	"delimiter": "\\n",
+	"frame": "{\"deviceId\":\"esp32-arm-01\",\"firmwareVersion\":\"1.2.0\",\"sequence\":128,\"sentAtUtc\":\"2026-04-02T08:00:00Z\",\"transport\":\"serial\",\"payload\":{\"waist\":90,\"shoulder\":45,\"elbow\":110,\"wristRoll\":80,\"wrist\":70},\"checksumCrc16\":\"A1F0\"}",
+	"checksumCrc16": "A1F0",
+	"byteLength": 240,
+	"receivedAtUtc": "2026-04-02T08:00:01Z",
+	"transport": "serial"
+}
+```
+
+Catatan:
+
+- `frame` adalah JSON string mentah dari firmware (belum diparsing).
+- `framing: jsonl` + `delimiter: \n` berarti satu frame per baris.
+- `byteLength` memudahkan observability saat debugging paket terpotong.
 
 ### JointPivotMappingOutput Shape
 

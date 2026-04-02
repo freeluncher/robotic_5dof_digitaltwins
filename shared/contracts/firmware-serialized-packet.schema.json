@@ -1,0 +1,76 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://freeluncher.github.io/robotic_5dof_digitaltwins/contracts/firmware-serialized-packet.schema.json",
+  "title": "FirmwareSerializedPacket",
+  "description": "Serialized firmware frame format sent to backend transport gateway.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "protocol",
+    "contentType",
+    "encoding",
+    "framing",
+    "delimiter",
+    "frame",
+    "byteLength",
+    "receivedAtUtc",
+    "transport"
+  ],
+  "properties": {
+    "protocol": {
+      "type": "string",
+      "const": "robotic-v4.telemetry.v1",
+      "description": "Protocol identifier for firmware telemetry stream."
+    },
+    "contentType": {
+      "type": "string",
+      "const": "application/json",
+      "description": "MIME content type of serialized frame."
+    },
+    "encoding": {
+      "type": "string",
+      "const": "utf-8",
+      "description": "Character encoding used by firmware serialization."
+    },
+    "framing": {
+      "type": "string",
+      "const": "jsonl",
+      "description": "JSON line framing strategy."
+    },
+    "delimiter": {
+      "type": "string",
+      "const": "\\n",
+      "description": "Frame delimiter token in stream."
+    },
+    "frame": {
+      "type": "string",
+      "minLength": 2,
+      "maxLength": 4096,
+      "description": "Serialized JSON frame body produced by firmware."
+    },
+    "checksumCrc16": {
+      "type": "string",
+      "pattern": "^[A-Fa-f0-9]{4}$",
+      "description": "Optional CRC16 checksum in hexadecimal format."
+    },
+    "byteLength": {
+      "type": "integer",
+      "minimum": 2,
+      "maximum": 4096,
+      "description": "Byte size of serialized frame."
+    },
+    "receivedAtUtc": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC ingestion timestamp at backend gateway."
+    },
+    "transport": {
+      "type": "string",
+      "enum": [
+        "serial",
+        "wifi"
+      ],
+      "description": "Physical transport used by firmware stream."
+    }
+  }
+}

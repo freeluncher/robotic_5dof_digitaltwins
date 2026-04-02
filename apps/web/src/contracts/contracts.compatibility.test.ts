@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import dtoCatalog from '../../../../shared/contracts/dto-catalog.json';
 import dtoSchema from '../../../../shared/contracts/dto.schema.json';
 import type { Esp32HardwareInput } from '../../../../shared/contracts/esp32-hardware-input';
+import type { FirmwareSerializedPacket } from '../../../../shared/contracts/firmware-serialized-packet';
 import type { JointPivotMappingOutput } from '../../../../shared/contracts/joint-pivot-mapping-output';
 import type { RawHardwareData } from '../../../../shared/contracts/raw-hardware-data';
 import {
@@ -48,6 +49,25 @@ describe('shared contract compatibility (frontend)', () => {
     expect(esp32Input.deviceId).toBe('esp32-arm-01');
     expect(esp32Input.payload.wrist).toBeTypeOf('number');
     expect(esp32Input.transport).toBe('serial');
+  });
+
+  it('memastikan shape FirmwareSerializedPacket stabil untuk stream firmware ke backend', () => {
+    const serializedPacket: FirmwareSerializedPacket = {
+      protocol: 'robotic-v4.telemetry.v1',
+      contentType: 'application/json',
+      encoding: 'utf-8',
+      framing: 'jsonl',
+      delimiter: '\\n',
+      frame: '{"deviceId":"esp32-arm-01","sequence":128}',
+      checksumCrc16: 'A1F0',
+      byteLength: 41,
+      receivedAtUtc: '2026-04-02T08:00:01Z',
+      transport: 'serial',
+    };
+
+    expect(serializedPacket.framing).toBe('jsonl');
+    expect(serializedPacket.frame.startsWith('{')).toBe(true);
+    expect(serializedPacket.byteLength).toBeGreaterThan(0);
   });
 
   it('memastikan shape JointPivotMappingOutput tetap kompatibel untuk animasi pivot', () => {
@@ -163,7 +183,7 @@ describe('shared contract compatibility (frontend)', () => {
 
   it('memastikan metadata DTO untuk generator dokumentasi tersedia', () => {
     expect(Array.isArray(dtoCatalog.contracts)).toBe(true);
-    expect(dtoCatalog.contracts.length).toBeGreaterThanOrEqual(4);
-    expect(dtoSchema.oneOf.length).toBeGreaterThanOrEqual(4);
+    expect(dtoCatalog.contracts.length).toBeGreaterThanOrEqual(5);
+    expect(dtoSchema.oneOf.length).toBeGreaterThanOrEqual(5);
   });
 });

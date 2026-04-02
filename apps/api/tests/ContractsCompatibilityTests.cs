@@ -63,6 +63,38 @@ public class ContractsCompatibilityTests
         Assert.Equal("A1F0", model.ChecksumCrc16);
     }
 
+      [Fact]
+      public void FirmwareSerializedPacket_contract_deserializes_from_shared_shape()
+      {
+        const string json = """
+        {
+          "protocol": "robotic-v4.telemetry.v1",
+          "contentType": "application/json",
+          "encoding": "utf-8",
+          "framing": "jsonl",
+          "delimiter": "\\n",
+          "frame": "{\"deviceId\":\"esp32-arm-01\",\"sequence\":128}",
+          "checksumCrc16": "A1F0",
+          "byteLength": 41,
+          "receivedAtUtc": "2026-04-02T08:00:01Z",
+          "transport": "serial"
+        }
+        """;
+
+        var model = JsonSerializer.Deserialize<FirmwareSerializedPacket>(json, new JsonSerializerOptions
+        {
+          PropertyNameCaseInsensitive = true,
+        });
+
+        Assert.NotNull(model);
+        Assert.Equal("robotic-v4.telemetry.v1", model!.Protocol);
+        Assert.Equal("application/json", model.ContentType);
+        Assert.Equal("jsonl", model.Framing);
+        Assert.Equal("\\n", model.Delimiter);
+        Assert.Equal(41, model.ByteLength);
+        Assert.Equal("serial", model.Transport);
+      }
+
     [Fact]
     public void SignalR_envelope_contract_deserializes_from_shared_shape()
     {

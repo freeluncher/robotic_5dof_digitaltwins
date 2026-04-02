@@ -18,6 +18,13 @@
       "schema": "./esp32-hardware-input.schema.json"
     },
     {
+      "name": "FirmwareSerializedPacket",
+      "category": "dto.transport.firmware",
+      "typescript": "./firmware-serialized-packet.ts",
+      "csharp": "./FirmwareSerializedPacket.cs",
+      "schema": "./firmware-serialized-packet.schema.json"
+    },
+    {
       "name": "JointPivotMappingOutput",
       "category": "dto.output",
       "typescript": "./joint-pivot-mapping-output.ts",

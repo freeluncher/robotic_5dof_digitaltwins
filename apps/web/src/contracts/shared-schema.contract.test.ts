@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 import dtoSchema from '../../../../shared/contracts/dto.schema.json';
 import esp32HardwareInputSchema from '../../../../shared/contracts/esp32-hardware-input.schema.json';
+import firmwareSerializedPacketSchema from '../../../../shared/contracts/firmware-serialized-packet.schema.json';
 import jointPivotMappingOutputSchema from '../../../../shared/contracts/joint-pivot-mapping-output.schema.json';
 import rawHardwareDataSchema from '../../../../shared/contracts/raw-hardware-data.schema.json';
 import signalrEventsSchema from '../../../../shared/contracts/signalr-events.schema.json';
@@ -14,6 +15,7 @@ function createAjv() {
 
   ajv.addSchema(rawHardwareDataSchema, rawHardwareDataSchema.$id);
   ajv.addSchema(esp32HardwareInputSchema, esp32HardwareInputSchema.$id);
+  ajv.addSchema(firmwareSerializedPacketSchema, firmwareSerializedPacketSchema.$id);
   ajv.addSchema(jointPivotMappingOutputSchema, jointPivotMappingOutputSchema.$id);
   ajv.addSchema(signalrEventsSchema, signalrEventsSchema.$id);
 
@@ -114,6 +116,40 @@ describe('shared schema contracts', () => {
     expect(validate(invalidEsp32Input)).toBe(false);
   });
 
+  it('memvalidasi format serialisasi firmware ke backend sesuai schema shared', () => {
+    const ajv = createAjv();
+    const validate = ajv.compile(firmwareSerializedPacketSchema);
+
+    const validSerializedPacket = {
+      protocol: 'robotic-v4.telemetry.v1',
+      contentType: 'application/json',
+      encoding: 'utf-8',
+      framing: 'jsonl',
+      delimiter: '\\n',
+      frame: '{"deviceId":"esp32-arm-01","sequence":128}',
+      checksumCrc16: 'A1F0',
+      byteLength: 41,
+      receivedAtUtc: '2026-04-02T08:00:01Z',
+      transport: 'serial',
+    };
+
+    const invalidSerializedPacket = {
+      protocol: 'robotic-v4.telemetry.v2',
+      contentType: 'text/plain',
+      encoding: 'ascii',
+      framing: 'raw',
+      delimiter: ';',
+      frame: '',
+      checksumCrc16: 'XYZ',
+      byteLength: -1,
+      receivedAtUtc: 'invalid-date',
+      transport: 'bluetooth',
+    };
+
+    expect(validate(validSerializedPacket)).toBe(true);
+    expect(validate(invalidSerializedPacket)).toBe(false);
+  });
+
   it('memvalidasi dto schema bundle terhadap payload shared', () => {
     const ajv = createAjv();
     const validate = ajv.compile(dtoSchema);
@@ -157,8 +193,21 @@ describe('shared schema contracts', () => {
       },
     };
 
+    const firmwarePacketPayload = {
+      protocol: 'robotic-v4.telemetry.v1',
+      contentType: 'application/json',
+      encoding: 'utf-8',
+      framing: 'jsonl',
+      delimiter: '\\n',
+      frame: '{"deviceId":"esp32-arm-01","sequence":128}',
+      byteLength: 41,
+      receivedAtUtc: '2026-04-02T08:00:01Z',
+      transport: 'serial',
+    };
+
     expect(validate(rawPayload)).toBe(true);
     expect(validate(signalrPayload)).toBe(true);
     expect(validate(esp32Payload)).toBe(true);
+    expect(validate(firmwarePacketPayload)).toBe(true);
   });
 });

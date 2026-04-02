@@ -11,6 +11,9 @@
       "$ref": "./esp32-hardware-input.schema.json"
     },
     {
+      "$ref": "./firmware-serialized-packet.schema.json"
+    },
+    {
       "$ref": "./joint-pivot-mapping-output.schema.json"
     },
     {
