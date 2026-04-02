@@ -28,6 +28,20 @@ public sealed class RobotTelemetryService : IRobotTelemetryService
             Payload: new TelemetryJointAngleUpdatePayload(mapped));
     }
 
+    public SignalREventEnvelope<TelemetryConnectionStatePayload> CreateConnectionStateTelemetry(
+        bool isConnected,
+        string transport,
+        string? reason,
+        string source = "api")
+    {
+        return new SignalREventEnvelope<TelemetryConnectionStatePayload>(
+            EventName: SignalREventName.TelemetryConnectionState,
+            MessageId: $"evt-conn-{Guid.NewGuid():N}",
+            TimestampUtc: DateTimeOffset.UtcNow,
+            Source: source,
+            Payload: new TelemetryConnectionStatePayload(isConnected, transport, reason));
+    }
+
     private static JointPivotMappingOutput MapToRadians(RawHardwareData hardware)
     {
         return new JointPivotMappingOutput(

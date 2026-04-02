@@ -21,6 +21,7 @@ builder.Services.AddHealthChecks();
 builder.Services.AddSignalR();
 builder.Services.AddSingleton<IHardwareDataValidator, HardwareDataValidator>();
 builder.Services.AddSingleton<IRobotTelemetryService, RobotTelemetryService>();
+builder.Services.AddSingleton<IFirmwareIngressService, FirmwareIngressService>();
 
 var app = builder.Build();
 

@@ -125,5 +125,14 @@ public class TelemetryControllerTests : IClassFixture<WebApplicationFactory<Prog
         {
             throw new InvalidOperationException("forced telemetry failure for global error middleware test");
         }
+
+        public SignalREventEnvelope<TelemetryConnectionStatePayload> CreateConnectionStateTelemetry(
+            bool isConnected,
+            string transport,
+            string? reason,
+            string source = "api")
+        {
+            throw new InvalidOperationException("forced telemetry failure for global error middleware test");
+        }
     }
 }

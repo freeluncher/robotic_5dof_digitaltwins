@@ -6,4 +6,9 @@ public interface IRobotTelemetryService
 {
     SignalREventEnvelope<TelemetryJointStatePayload> CreateJointStateTelemetry(RawHardwareData hardware);
     SignalREventEnvelope<TelemetryJointAngleUpdatePayload> CreateJointAngleUpdateTelemetry(RawHardwareData hardware);
+    SignalREventEnvelope<TelemetryConnectionStatePayload> CreateConnectionStateTelemetry(
+        bool isConnected,
+        string transport,
+        string? reason,
+        string source = "api");
 }
