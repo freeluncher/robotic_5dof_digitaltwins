@@ -10,8 +10,11 @@
     "test:watch": "vitest --watch"
   },
   "dependencies": {
+    "@react-three/drei": "^9.122.0",
+    "@react-three/fiber": "^8.17.10",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "three": "^0.170.0",
     "zustand": "^5.0.12"
   },
   "devDependencies": {

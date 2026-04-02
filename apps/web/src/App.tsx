@@ -1,4 +1,5 @@
 import { ROBOTIC_V4_GLB_URL } from './assets/modelAssets';
+import { RobotScene } from './components/RobotScene';
 import { StatusCard } from './components/StatusCard';
 import { useDigitalTwinStatus } from './hooks/useDigitalTwinStatus';
 
@@ -17,12 +18,7 @@ function App() {
 
       <section className="visualization-layout" aria-label="Digital twin initial visualization">
         <article className="viewport-card">
-          <div className="viewport-grid" role="img" aria-label="3D viewport placeholder">
-            <div className="viewport-crosshair" />
-            <span className="viewport-label">3D VIEWPORT PLACEHOLDER</span>
-            <span className="viewport-sub">Ready for GLB + R3F scene mount</span>
-            <span className="asset-chip">GLB imported in pipeline</span>
-          </div>
+          <RobotScene />
         </article>
 
         <aside className="status-panel">
