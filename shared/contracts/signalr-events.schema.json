@@ -16,6 +16,7 @@
         "telemetry.joint-state.updated",
         "telemetry.joint-angle.updated",
         "telemetry.connection.state",
+        "control.command.requested",
         "control.set-joint-targets",
         "control.set-gripper"
       ]
@@ -103,6 +104,30 @@
         }
       }
     },
+    "controlCommandRequestedPayload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "commandName"
+      ],
+      "properties": {
+        "commandName": {
+          "type": "string",
+          "enum": [
+            "control.set-joint-targets",
+            "control.set-gripper"
+          ]
+        },
+        "hardwareTargets": {
+          "$ref": "#/$defs/rawHardwareData"
+        },
+        "openRatio": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    },
     "controlSetJointTargetsPayload": {
       "type": "object",
       "additionalProperties": false,
@@ -143,6 +168,23 @@
             },
             "payload": {
               "$ref": "#/$defs/telemetryJointStatePayload"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "$ref": "#/$defs/eventEnvelopeBase"
+        },
+        {
+          "properties": {
+            "eventName": {
+              "const": "control.command.requested"
+            },
+            "payload": {
+              "$ref": "#/$defs/controlCommandRequestedPayload"
             }
           }
         }

@@ -5,6 +5,7 @@ public static class SignalREventName
     public const string TelemetryJointState = "telemetry.joint-state.updated";
     public const string TelemetryJointAngleUpdate = "telemetry.joint-angle.updated";
     public const string TelemetryConnectionState = "telemetry.connection.state";
+    public const string ControlCommandRequested = "control.command.requested";
     public const string ControlSetJointTargets = "control.set-joint-targets";
     public const string ControlSetGripper = "control.set-gripper";
 }
@@ -30,6 +31,12 @@ public sealed record TelemetryConnectionStatePayload(
     bool IsConnected,
     string Transport,
     string? Reason
+);
+
+public sealed record ControlCommandRequestedPayload(
+    string CommandName,
+    RawHardwareData? HardwareTargets,
+    double? OpenRatio
 );
 
 public sealed record ControlSetJointTargetsPayload(

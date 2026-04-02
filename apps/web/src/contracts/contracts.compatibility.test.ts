@@ -6,6 +6,7 @@ import type { JointPivotMappingOutput } from '../../../../shared/contracts/joint
 import type { RawHardwareData } from '../../../../shared/contracts/raw-hardware-data';
 import {
   SignalREventName,
+  type ControlCommandRequestedPayload,
   type TelemetryConnectionStatePayload,
   type TelemetryJointAngleUpdatePayload,
   type SignalREventEnvelope,
@@ -110,6 +111,31 @@ describe('shared contract compatibility (frontend)', () => {
     expect(envelope.eventName).toBe('telemetry.connection.state');
     expect(envelope.payload.isConnected).toBe(true);
     expect(envelope.payload.transport).toBe('signalr');
+  });
+
+  it('memastikan event command UI ke backend terdefinisi untuk alur kontrol realtime', () => {
+    const payload: ControlCommandRequestedPayload = {
+      commandName: SignalREventName.ControlSetJointTargets,
+      hardwareTargets: {
+        waist: 90,
+        shoulder: 45,
+        elbow: 100,
+        wristRoll: 80,
+        wrist: 70,
+      },
+    };
+
+    const envelope: SignalREventEnvelope<ControlCommandRequestedPayload> = {
+      eventName: SignalREventName.ControlCommandRequested,
+      messageId: 'msg-cmd-1',
+      timestampUtc: '2026-04-02T07:30:00Z',
+      source: 'web',
+      payload,
+    };
+
+    expect(envelope.eventName).toBe('control.command.requested');
+    expect(envelope.payload.commandName).toBe('control.set-joint-targets');
+    expect(envelope.payload.hardwareTargets?.elbow).toBe(100);
   });
 
   it('memastikan metadata DTO untuk generator dokumentasi tersedia', () => {

@@ -5,6 +5,7 @@ export const SignalREventName = {
   TelemetryJointState: 'telemetry.joint-state.updated',
   TelemetryJointAngleUpdate: 'telemetry.joint-angle.updated',
   TelemetryConnectionState: 'telemetry.connection.state',
+  ControlCommandRequested: 'control.command.requested',
   ControlSetJointTargets: 'control.set-joint-targets',
   ControlSetGripper: 'control.set-gripper',
 } as const;
@@ -33,6 +34,16 @@ export interface TelemetryConnectionStatePayload {
   isConnected: boolean;
   transport: 'serial' | 'wifi' | 'simulator';
   reason?: string;
+}
+
+export type ControlCommandName =
+  | typeof SignalREventName.ControlSetJointTargets
+  | typeof SignalREventName.ControlSetGripper;
+
+export interface ControlCommandRequestedPayload {
+  commandName: ControlCommandName;
+  hardwareTargets?: RawHardwareData;
+  openRatio?: number;
 }
 
 export interface ControlSetJointTargetsPayload {

@@ -71,6 +71,7 @@ Event name yang disepakati:
 - `telemetry.joint-state.updated`
 - `telemetry.joint-angle.updated`
 - `telemetry.connection.state`
+- `control.command.requested`
 - `control.set-joint-targets`
 - `control.set-gripper`
 
@@ -114,6 +115,21 @@ Contoh payload status koneksi hardware:
 	"isConnected": true,
 	"transport": "signalr",
 	"reason": "connected"
+}
+```
+
+Contoh payload command UI ke backend:
+
+```json
+{
+	"commandName": "control.set-joint-targets",
+	"hardwareTargets": {
+		"waist": 90,
+		"shoulder": 45,
+		"elbow": 110,
+		"wristRoll": 80,
+		"wrist": 70
+	}
 }
 ```
 

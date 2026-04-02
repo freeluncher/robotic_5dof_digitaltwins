@@ -125,4 +125,37 @@ public class ContractsCompatibilityTests
         Assert.True(envelope.Payload.IsConnected);
         Assert.Equal("signalr", envelope.Payload.Transport);
     }
+
+    [Fact]
+    public void SignalR_control_command_contract_deserializes_from_shared_shape()
+    {
+        const string json = """
+        {
+          "eventName": "control.command.requested",
+          "messageId": "evt-cmd-123",
+          "timestampUtc": "2026-04-02T07:30:00Z",
+          "source": "web",
+          "payload": {
+            "commandName": "control.set-joint-targets",
+            "hardwareTargets": {
+              "waist": 90,
+              "shoulder": 45,
+              "elbow": 110,
+              "wristRoll": 80,
+              "wrist": 70
+            }
+          }
+        }
+        """;
+
+        var envelope = JsonSerializer.Deserialize<SignalREventEnvelope<ControlCommandRequestedPayload>>(json, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+        });
+
+        Assert.NotNull(envelope);
+        Assert.Equal(SignalREventName.ControlCommandRequested, envelope!.EventName);
+        Assert.Equal(SignalREventName.ControlSetJointTargets, envelope.Payload.CommandName);
+        Assert.Equal(90, envelope.Payload.HardwareTargets!.Waist);
+    }
 }

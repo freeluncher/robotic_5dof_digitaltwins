@@ -38,4 +38,18 @@ public sealed class RobotTelemetryHub : Hub<IRobotTelemetryClient>
     {
         await Clients.Others.ControlSetGripper(payload);
     }
+
+    public async Task SubmitControlCommand(SignalREventEnvelope<ControlCommandRequestedPayload> envelope)
+    {
+        if (envelope.Payload.CommandName == SignalREventName.ControlSetJointTargets && envelope.Payload.HardwareTargets is not null)
+        {
+            await Clients.Others.ControlSetJointTargets(new ControlSetJointTargetsPayload(envelope.Payload.HardwareTargets));
+            return;
+        }
+
+        if (envelope.Payload.CommandName == SignalREventName.ControlSetGripper && envelope.Payload.OpenRatio is not null)
+        {
+            await Clients.Others.ControlSetGripper(new ControlSetGripperPayload(envelope.Payload.OpenRatio.Value));
+        }
+    }
 }
