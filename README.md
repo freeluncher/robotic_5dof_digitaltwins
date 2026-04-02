@@ -1,61 +1,155 @@
-# Robotic Arm 5 DOF Digital Twin Monorepo
+# Robotic Arm 5 DOF Digital Twin
 
-Monorepo ini memisahkan frontend, backend, dan kontrak bersama supaya pengembangan bisa berjalan dengan pola TDD yang konsisten.
+This monorepo contains a production-oriented Digital Twin implementation for a 5 DOF robotic arm, with a strong focus on kinematic accuracy, real-time synchronization, and a Test-Driven Development (TDD) workflow.
 
-## Struktur Utama
+The project integrates:
+
+- 3D visualization frontend (React + Three.js/R3F)
+- Real-time backend API (.NET 8 + SignalR)
+- Shared contracts used by both frontend and backend
+
+## Current Status
+
+The project is beyond the initial scaffold stage. Major implemented capabilities include:
+
+- GLB visualization of the `robotic_v4` model in the web viewport
+- Hardware-to-pivot mapping for the Three.js scene graph
+- Axis calibration fixes for shoulder, elbow, wrist roll, and wrist pivot
+- Wrist roll runtime mapping aligned with the `link2` normal
+- Parallel gripper mechanism with gear, connection-link, and finger coupling
+- Manual/live joint control panel with 5 DOF sliders and gripper control
+- Critical mechanical limits enforced:
+  - shoulder max: `167 deg`
+  - gripper min: `90 deg` (maximum clamping position)
+- Backend telemetry API + hardware ingest + simulation mode
+- SignalR broadcasts for joint telemetry and connection state
+- Active cross-layer test coverage (frontend/backend/contracts)
+
+## Repository Structure
 
 ```text
 apps/
-  web/        # React + Vite + Zustand + Vitest
-  api/        # .NET 8 Web API + SignalR + xUnit
+  web/        React + Vite + Zustand + Vitest + Three.js/R3F
+  api/        .NET 8 Web API + SignalR + xUnit
 shared/
-  contracts/  # DTO, event contract, schema, dan dokumen kontrak bersama
+  contracts/  DTOs, event contracts, JSON schema, compatibility docs
+notes/        Step-by-step engineering implementation notes
 ```
 
-## Alur Kerja TDD
+## Technology Stack
 
-Tim bekerja dengan urutan Red-Green-Refactor:
+- Frontend: React 18, TypeScript, Vite, Zustand, Three.js, @react-three/fiber, @react-three/drei, Vitest
+- Backend: ASP.NET Core .NET 8, SignalR, xUnit
+- Shared Contracts: TypeScript + C# DTO parity, schema-based compatibility checks
+- Tooling: ESLint, Prettier, Makefile workflow
 
-1. Red: tulis test yang gagal untuk perilaku baru atau bug yang ingin diperbaiki.
-2. Green: implementasikan solusi paling kecil agar test lulus.
-3. Refactor: rapikan struktur kode tanpa mengubah perilaku.
+## Runtime Architecture
 
-Aturan praktis untuk repo ini:
+Primary data flow:
 
-- Test frontend ditulis di `apps/web` dengan Vitest.
-- Test backend ditulis di `apps/api/tests` dengan xUnit.
-- Kontrak yang dipakai bersama frontend dan backend disimpan di `shared/contracts`.
-- Setiap perubahan perilaku harus dimulai dari test, bukan dari implementasi.
+`ESP32 / simulator -> ASP.NET API -> SignalR Hub -> Zustand Store -> R3F Scene Animation`
 
-## Dokumentasi Otomatis
+Key runtime components:
 
-Struktur ini sengaja dibuat ramah untuk dokumentasi otomatis:
+- Telemetry + hardware ingest API endpoints
+- SignalR telemetry hub for joint updates and connectivity state
+- Pivot-based scene graph mapping (not mesh-based direct rotation)
+- Debug overlays for local axes and object normal lines
 
-- Setiap area utama punya README sendiri.
-- Kontrak bersama berada di satu lokasi agar mudah diekstrak ke OpenAPI, JSON Schema, atau TypeScript types.
-- Nama folder mengikuti batas tanggung jawab yang jelas sehingga generator dokumentasi dapat memetakan konteks tanpa menebak.
-- Checklist progres proyek tersedia di [PROJECT_CHECKLIST.md](PROJECT_CHECKLIST.md).
+## API and Realtime Endpoints
 
-## Perintah Awal
+Backend defaults:
 
-- Frontend: jalankan test Vitest dari `apps/web`.
-- Backend: jalankan `dotnet test` pada proyek xUnit di `apps/api/tests`.
+- Health: `/health`
+- SignalR Hub: `/hubs/telemetry`
 
-Folder ini masih berupa scaffold awal. Implementasi fitur, integrasi SignalR, dan model kontrak akan menyusul setelah kerangka TDD siap.
+HTTP API:
 
-## Workflow dengan Makefile
+- `POST /api/telemetry/joint-state`
+- `POST /api/hardware/ingest`
+- `GET /api/hardware/simulator/status`
+- `POST /api/hardware/simulator/start`
+- `POST /api/hardware/simulator/stop`
 
-Target Makefile tersedia di root repository:
+## Local Development
 
-- `make install` untuk install npm dependency frontend dan `dotnet restore` backend.
-- `make test` untuk menjalankan unit test frontend dan backend.
-- `make dev` untuk menjalankan backend .NET dan frontend Vite secara bersamaan.
+### Prerequisites
 
-### Catatan Windows (VS Code Terminal)
+- Node.js 18+ (latest LTS recommended)
+- .NET SDK 8
+- GNU Make (optional, for Makefile workflow)
 
-Jika perintah `make` belum tersedia di terminal VS Code pada Windows, pasang GNU Make terlebih dahulu, misalnya melalui salah satu opsi berikut:
+### Install Dependencies
+
+Use either:
+
+- `make install`
+
+Or run manually:
+
+- `npm install`
+- `npm install --prefix apps/web`
+- `dotnet restore apps/api/src/robotic_v4.Api.csproj`
+- `dotnet restore apps/api/tests/robotic_v4.Api.Tests.csproj`
+
+### Run Development
+
+- `make dev`
+
+This runs backend API and frontend Vite dev server in parallel.
+
+## Build, Test, and Lint
+
+Root scripts:
+
+- `npm run build`
+- `npm run test`
+- `npm run coverage`
+- `npm run lint`
+- `npm run format:check`
+
+Scoped scripts:
+
+- `npm run build:web`
+- `npm run build:api`
+- `npm run test:web`
+- `npm run test:api`
+
+## TDD Workflow
+
+This repository follows Red-Green-Refactor:
+
+1. Red: write a failing test for new behavior or a bug fix
+2. Green: implement the smallest change to pass the test
+3. Refactor: improve code structure without changing behavior
+
+Working rules:
+
+- Behavior changes must include tests
+- Mechanical/pivot mapping changes must be validated in scene-graph tests
+- Implementation logs are captured in `notes`
+
+## Documentation and Engineering Notes
+
+- Main progress checklist: [PROJECT_CHECKLIST.md](PROJECT_CHECKLIST.md)
+- Implementation history: [notes](notes)
+- Shared frontend/backend contracts: [shared/contracts](shared/contracts)
+
+## Roadmap Snapshot
+
+Major items still in progress:
+
+- API and domain documentation completion
+- Realtime telemetry panel
+- Operational connection status indicator
+- Mechanical limit and warning panel
+- Pre-release quality-gate hardening
+
+## Windows Note
+
+If `make` is not available in your terminal:
 
 - Chocolatey: `choco install make`
 - Scoop: `scoop install make`
 
-Setelah instalasi, buka terminal VS Code baru lalu jalankan target Makefile dari root project.
+After installation, open a new terminal session before running Make targets.
