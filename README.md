@@ -132,7 +132,6 @@ Working rules:
 ## Documentation and Engineering Notes
 
 - Main progress checklist: [PROJECT_CHECKLIST.md](PROJECT_CHECKLIST.md)
-- Implementation history: [notes](notes)
 - Shared frontend/backend contracts: [shared/contracts](shared/contracts)
 
 ## Roadmap Snapshot
