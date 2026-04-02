@@ -147,7 +147,7 @@ Membangun aplikasi Digital Twin untuk Robotic Arm 5 DOF (robotic_v4) yang memung
 
 ## 12. UI Operasional
 
-- [ ] Buat panel kontrol joint.
+- [x] Buat panel kontrol joint.
 - [ ] Buat panel telemetry realtime.
 - [ ] Buat indikator status koneksi.
 - [ ] Buat panel limit mekanik dan warning.

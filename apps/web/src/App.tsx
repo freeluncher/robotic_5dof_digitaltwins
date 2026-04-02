@@ -1,4 +1,5 @@
 import { ROBOTIC_V4_GLB_URL } from './assets/modelAssets';
+import { JointControlPanel } from './components/JointControlPanel';
 import { RobotScene } from './components/RobotScene';
 import { StatusCard } from './components/StatusCard';
 import { useDigitalTwinStatus } from './hooks/useDigitalTwinStatus';
@@ -22,6 +23,9 @@ function App() {
         </article>
 
         <aside className="status-panel">
+          <JointControlPanel />
+
+          <div className="runtime-snapshot">
           <h2>Runtime Snapshot</h2>
           <ul className="status-list">
             <StatusCard title="Control mode" value={controlMode} />
@@ -31,6 +35,7 @@ function App() {
             <StatusCard title="GLB asset" value="robotic_v4.glb loaded" />
           </ul>
           <p className="asset-path">Asset URL: {ROBOTIC_V4_GLB_URL}</p>
+          </div>
         </aside>
       </section>
     </main>
