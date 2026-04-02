@@ -11,6 +11,7 @@ import { mapHardwareToPivotDeltaFromNeutral } from '../utils/kinematics';
 import { resolveModelScaleFromHeight } from '../utils/modelScaleNormalization';
 import { verifyYUpAndExportTransform } from '../utils/orientationVerification';
 import {
+  applyGripperGearRotation,
   applyJointMappingToSceneGraph,
   countDetectedMainPivots,
 } from '../utils/sceneGraphMapping';
@@ -31,6 +32,7 @@ const tempSize = new Vector3();
 
 function RobotModel() {
   const hardware = useRobotStore((state) => state.hardware);
+  const gripper = useRobotStore((state) => state.gripper);
   const mapped = useMemo(() => mapHardwareToPivotDeltaFromNeutral(hardware), [hardware]);
   const { scene } = useGLTF(ROBOTIC_V4_GLB_URL) as { scene: Group };
 
@@ -42,6 +44,7 @@ function RobotModel() {
 
     // Initial apply keeps the model pose in sync for the first render.
     applyJointMappingToSceneGraph(clone, mapped);
+    applyGripperGearRotation(clone, gripper);
     return {
       runtimeScene: clone,
       modelScale: scaleInfo.appliedScale,
@@ -51,7 +54,8 @@ function RobotModel() {
 
   useEffect(() => {
     applyJointMappingToSceneGraph(runtimeScene, mapped);
-  }, [runtimeScene, mapped]);
+    applyGripperGearRotation(runtimeScene, gripper);
+  }, [runtimeScene, mapped, gripper]);
 
   return (
     <>

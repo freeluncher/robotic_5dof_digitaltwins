@@ -1,7 +1,9 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  clampGripperAngle,
   clampHardwareAngle,
+  neutralGripperAngle,
   neutralHardwareAngles,
   withJointAngle,
 } from './jointControlPanel.helpers';
@@ -30,5 +32,15 @@ describe('joint control panel helpers', () => {
       wristRoll: 90,
       wrist: 90,
     });
+  });
+
+  it('clamps gripper angle to 0..180', () => {
+    expect(clampGripperAngle(-30)).toBe(0);
+    expect(clampGripperAngle(90)).toBe(90);
+    expect(clampGripperAngle(220)).toBe(180);
+  });
+
+  it('returns neutral gripper angle at 90 degrees', () => {
+    expect(neutralGripperAngle()).toBe(90);
   });
 });

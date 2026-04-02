@@ -32,3 +32,6 @@ export const updatedMappedFixture: JointPivotMappingOutput = {
   wrist_roll_pivot: Math.PI / 6,
   wrist_pivot: Math.PI / 8,
 };
+
+export const defaultGripperFixture = 90;
+export const updatedGripperFixture = 120;

@@ -2,8 +2,10 @@ import { describe, expect, it } from 'vitest';
 
 import { resetAllStores } from '../tests/helpers/storeTestHelpers';
 import {
+  defaultGripperFixture,
   defaultHardwareFixture,
   defaultMappedFixture,
+  updatedGripperFixture,
   updatedHardwareFixture,
   updatedMappedFixture,
 } from '../tests/fixtures/storeFixtures';
@@ -17,12 +19,14 @@ describe('zustand stores setup', () => {
 
     useRobotStore.getState().setHardware(updatedHardwareFixture);
     useRobotStore.getState().setMapped(updatedMappedFixture);
+    useRobotStore.getState().setGripper(updatedGripperFixture);
     flushRobotStoreUpdates();
 
     const state = useRobotStore.getState();
     expect(state.hardware.waist).toBe(100);
     expect(state.hardware.wristRoll).toBe(120);
     expect(state.mapped.waist_pivot).toBe(Math.PI / 2);
+    expect(state.gripper).toBe(120);
   });
 
   it('menggabungkan update hardware dan mapped yang datang beruntun dalam satu flush', () => {
@@ -47,12 +51,14 @@ describe('zustand stores setup', () => {
 
     useRobotStore.getState().setHardware(updatedHardwareFixture);
     useRobotStore.getState().setMapped(updatedMappedFixture);
+    useRobotStore.getState().setGripper(updatedGripperFixture);
     cancelRobotStoreUpdates();
 
     const state = useRobotStore.getState();
 
     expect(state.hardware).toEqual(defaultHardwareFixture);
     expect(state.mapped).toEqual(defaultMappedFixture);
+    expect(state.gripper).toBe(defaultGripperFixture);
   });
 
   it('mengelola ui state untuk mode kontrol dan panel', () => {

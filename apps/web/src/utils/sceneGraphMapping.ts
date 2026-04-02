@@ -17,6 +17,10 @@ const tempAxisPointParent = new Vector3();
 const tempWristParentPosition = new Vector3();
 const tempAxisParent = new Vector3();
 const tempWristQuaternion = new Quaternion();
+const GEAR_BISECTOR_YZ_AXIS = new Vector3(0, 1, 1).normalize();
+const tempGearDeltaQuaternion = new Quaternion();
+
+const GRIPPER_NEUTRAL_DEG = 90;
 
 function applyAxisAngleInParentSpace(node: Object3D, axisInParentSpace: Vector3, angle: number): void {
   tempWristQuaternion.setFromAxisAngle(axisInParentSpace, angle);
@@ -111,4 +115,40 @@ export function applyJointMappingToSceneGraph(root: Object3D, mapped: JointPivot
     pivots[pivotName].rotation[mapping.axis] =
       (mapping.offset ?? 0) + valueByPivot[pivotName] * mapping.direction;
   }
+}
+
+export function applyGripperGearRotation(root: Object3D, gripperDeg: number): boolean {
+  const gearLeftPivot = root.getObjectByName('gear_l_pivot');
+  const gearRightPivot = root.getObjectByName('gear_r_pivot');
+  const gearLeft = root.getObjectByName('gear_l');
+  const gearRight = root.getObjectByName('gear_r');
+
+  const leftTarget = gearLeftPivot ?? gearLeft;
+  const rightTarget = gearRightPivot ?? gearRight;
+
+  if (!leftTarget || !rightTarget) {
+    return false;
+  }
+
+  const angleRad = ((gripperDeg - GRIPPER_NEUTRAL_DEG) * Math.PI) / 180;
+  const leftBase =
+    (leftTarget.userData.__gearBaseQuaternion as Quaternion | undefined) ??
+    leftTarget.quaternion.clone();
+  if (!leftTarget.userData.__gearBaseQuaternion) {
+    leftTarget.userData.__gearBaseQuaternion = leftBase;
+  }
+
+  const rightBase =
+    (rightTarget.userData.__gearBaseQuaternion as Quaternion | undefined) ??
+    rightTarget.quaternion.clone();
+  if (!rightTarget.userData.__gearBaseQuaternion) {
+    rightTarget.userData.__gearBaseQuaternion = rightBase;
+  }
+
+  tempGearDeltaQuaternion.setFromAxisAngle(GEAR_BISECTOR_YZ_AXIS, angleRad);
+  leftTarget.quaternion.copy(leftBase).multiply(tempGearDeltaQuaternion);
+
+  tempGearDeltaQuaternion.setFromAxisAngle(GEAR_BISECTOR_YZ_AXIS, -angleRad);
+  rightTarget.quaternion.copy(rightBase).multiply(tempGearDeltaQuaternion);
+  return true;
 }

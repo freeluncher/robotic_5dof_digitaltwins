@@ -24,16 +24,19 @@ const defaultMapped: JointPivotMappingOutput = {
 type RobotState = {
   hardware: RawHardwareData;
   mapped: JointPivotMappingOutput;
+  gripper: number;
   setHardware: (next: RawHardwareData) => void;
   setMapped: (next: JointPivotMappingOutput) => void;
+  setGripper: (next: number) => void;
 };
 
 let pendingHardware: RawHardwareData | null = null;
 let pendingMapped: JointPivotMappingOutput | null = null;
+let pendingGripper: number | null = null;
 let pendingFlushHandle: ReturnType<typeof setTimeout> | null = null;
 
 function flushRobotUpdates() {
-  const nextState: Partial<Pick<RobotState, 'hardware' | 'mapped'>> = {};
+  const nextState: Partial<Pick<RobotState, 'hardware' | 'mapped' | 'gripper'>> = {};
 
   if (pendingHardware !== null) {
     nextState.hardware = pendingHardware;
@@ -43,8 +46,13 @@ function flushRobotUpdates() {
     nextState.mapped = pendingMapped;
   }
 
+  if (pendingGripper !== null) {
+    nextState.gripper = pendingGripper;
+  }
+
   pendingHardware = null;
   pendingMapped = null;
+  pendingGripper = null;
 
   if (Object.keys(nextState).length > 0) {
     useRobotStore.setState(nextState);
@@ -79,17 +87,23 @@ export function cancelRobotStoreUpdates() {
 
   pendingHardware = null;
   pendingMapped = null;
+  pendingGripper = null;
 }
 
 export const useRobotStore = create<RobotState>((set) => ({
   hardware: defaultHardware,
   mapped: defaultMapped,
+  gripper: 90,
   setHardware: (next) => {
     pendingHardware = next;
     scheduleRobotUpdateFlush();
   },
   setMapped: (next) => {
     pendingMapped = next;
+    scheduleRobotUpdateFlush();
+  },
+  setGripper: (next) => {
+    pendingGripper = next;
     scheduleRobotUpdateFlush();
   },
 }));

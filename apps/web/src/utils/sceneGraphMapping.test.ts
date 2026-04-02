@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 
 import { mappedFixtureRadians } from '../tests/fixtures/kinematicsFixtures';
 import {
+  applyGripperGearRotation,
   applyJointMappingToSceneGraph,
   countDetectedMainPivots,
   mapMainJointPivots,
@@ -108,5 +109,36 @@ describe('scene graph joint mapping', () => {
 
     expect(Math.abs(wristRollPivot.quaternion.x)).toBeGreaterThan(0);
     expect(wristRollPivot.rotation.y).toBeCloseTo(0, 6);
+  });
+
+  it('menerapkan rotasi gripper berbasis gear dengan arah berlawanan', () => {
+    const root = createNode('robotic_v4') as Group;
+    const gearLPivot = createNode('gear_l_pivot');
+    const gearRPivot = createNode('gear_r_pivot');
+    const gearL = createNode('gear_l');
+    const gearR = createNode('gear_r');
+    root.add(gearLPivot);
+    root.add(gearRPivot);
+    gearLPivot.add(gearL);
+    gearRPivot.add(gearR);
+
+    const applied = applyGripperGearRotation(root, 120);
+    const halfAngleSin = Math.sin(Math.PI / 12);
+    const halfAngleCos = Math.cos(Math.PI / 12);
+    const bisectorComponent = halfAngleSin / Math.sqrt(2);
+
+    expect(applied).toBe(true);
+    expect(gearLPivot.quaternion.x).toBeCloseTo(0, 12);
+    expect(gearLPivot.quaternion.y).toBeCloseTo(bisectorComponent, 12);
+    expect(gearLPivot.quaternion.z).toBeCloseTo(bisectorComponent, 12);
+    expect(gearLPivot.quaternion.w).toBeCloseTo(halfAngleCos, 12);
+
+    expect(gearRPivot.quaternion.x).toBeCloseTo(0, 12);
+    expect(gearRPivot.quaternion.y).toBeCloseTo(-bisectorComponent, 12);
+    expect(gearRPivot.quaternion.z).toBeCloseTo(-bisectorComponent, 12);
+    expect(gearRPivot.quaternion.w).toBeCloseTo(halfAngleCos, 12);
+
+    expect(gearL.rotation.y).toBe(0);
+    expect(gearR.rotation.y).toBe(0);
   });
 });

@@ -3,6 +3,8 @@ import { useMemo } from 'react';
 import { useRobotStore } from '../stores/robotStore';
 import { useUiStore } from '../stores/uiStore';
 import {
+  clampGripperAngle,
+  neutralGripperAngle,
   neutralHardwareAngles,
   withJointAngle,
   type JointField,
@@ -25,7 +27,9 @@ export function JointControlPanel() {
   const controlMode = useUiStore((state) => state.controlMode);
   const setControlMode = useUiStore((state) => state.setControlMode);
   const hardware = useRobotStore((state) => state.hardware);
+  const gripper = useRobotStore((state) => state.gripper);
   const setHardware = useRobotStore((state) => state.setHardware);
+  const setGripper = useRobotStore((state) => state.setGripper);
 
   const isManualMode = controlMode === 'manual';
 
@@ -84,6 +88,23 @@ export function JointControlPanel() {
             </label>
           );
         })}
+
+        <label className="joint-control-row">
+          <span className="joint-label">Gripper (Gear L/R)</span>
+          <input
+            type="range"
+            min={0}
+            max={180}
+            step={1}
+            value={gripper}
+            disabled={!isManualMode}
+            onChange={(event) => {
+              const nextValue = Number(event.currentTarget.value);
+              setGripper(clampGripperAngle(nextValue));
+            }}
+          />
+          <output className="joint-value">{Math.round(gripper)} deg</output>
+        </label>
       </div>
 
       <div className="joint-panel-actions">
@@ -91,7 +112,10 @@ export function JointControlPanel() {
           type="button"
           className="reset-button"
           disabled={!isManualMode}
-          onClick={() => setHardware(neutralHardwareAngles())}
+          onClick={() => {
+            setHardware(neutralHardwareAngles());
+            setGripper(neutralGripperAngle());
+          }}
         >
           Reset Ke Netral (90 deg)
         </button>

@@ -2,6 +2,7 @@ import { useConnectivityStore } from '../../stores/connectivityStore';
 import { cancelRobotStoreUpdates, useRobotStore } from '../../stores/robotStore';
 import { useUiStore } from '../../stores/uiStore';
 import {
+  defaultGripperFixture,
   defaultHardwareFixture,
   defaultMappedFixture,
 } from '../fixtures/storeFixtures';
@@ -12,6 +13,7 @@ export function resetAllStores() {
   useRobotStore.setState({
     hardware: defaultHardwareFixture,
     mapped: defaultMappedFixture,
+    gripper: defaultGripperFixture,
   });
 
   useUiStore.setState({
