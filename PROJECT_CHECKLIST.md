@@ -91,8 +91,8 @@ Membangun aplikasi Digital Twin untuk Robotic Arm 5 DOF (robotic_v4) yang memung
 ## 6. 3D Robot Model Integration
 
 - [x] Import GLB model ke pipeline frontend.
-- [ ] Verifikasi nama node dan pivot sesuai hierarchy Blender.
-- [ ] Pastikan rotasi diterapkan ke pivot, bukan mesh link.
+- [x] Verifikasi nama node dan pivot sesuai hierarchy Blender.
+- [x] Pastikan rotasi diterapkan ke pivot, bukan mesh link.
 - [ ] Implementasikan pemetaan joint ke scene graph Three.js.
 - [ ] Verifikasi orientasi Y-up dan transform hasil export Blender.
 - [ ] Tambahkan catatan troubleshooting untuk `Apply All Transforms` di Blender.
