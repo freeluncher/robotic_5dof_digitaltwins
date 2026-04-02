@@ -211,6 +211,114 @@ h2 {
   padding-top: 0.9rem;
 }
 
+.telemetry-panel {
+  border: 1px solid #d1e2f3;
+  border-radius: 0.75rem;
+  padding: 0.85rem;
+  background: linear-gradient(165deg, #f6fbff 0%, #e7f2ff 100%);
+  display: grid;
+  gap: 0.7rem;
+}
+
+.telemetry-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+}
+
+.telemetry-badge {
+  border-radius: 999px;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.76rem;
+  font-weight: 700;
+  border: 1px solid transparent;
+}
+
+.telemetry-live {
+  color: #14532d;
+  background: #dcfce7;
+  border-color: #86efac;
+}
+
+.telemetry-stale {
+  color: #7c2d12;
+  background: #ffedd5;
+  border-color: #fdba74;
+}
+
+.telemetry-waiting {
+  color: #1e3a8a;
+  background: #dbeafe;
+  border-color: #93c5fd;
+}
+
+.telemetry-offline {
+  color: #7f1d1d;
+  background: #fee2e2;
+  border-color: #fca5a5;
+}
+
+.telemetry-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+}
+
+.telemetry-meta-item {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #d5e7f8;
+  border-radius: 0.5rem;
+  background: #ffffff;
+  padding: 0.45rem 0.55rem;
+}
+
+.telemetry-meta-item span {
+  font-size: 0.73rem;
+  color: #64748b;
+}
+
+.telemetry-meta-item strong {
+  color: #0f172a;
+  text-transform: capitalize;
+}
+
+.telemetry-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  background: #ffffff;
+  border: 1px solid #d5e7f8;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.telemetry-table th,
+.telemetry-table td {
+  padding: 0.42rem 0.55rem;
+  text-align: left;
+  border-bottom: 1px solid #e2ecf8;
+}
+
+.telemetry-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.telemetry-table th {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: #475569;
+  background: #f8fbff;
+}
+
+.telemetry-footnote {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #486581;
+}
+
 .status-list {
   list-style: none;
   margin: 0.8rem 0 0;

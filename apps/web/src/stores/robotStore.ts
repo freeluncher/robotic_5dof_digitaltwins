@@ -27,6 +27,10 @@ type RobotState = {
   hardware: RawHardwareData;
   mapped: JointPivotMappingOutput;
   gripper: number;
+  lastHardwareUpdateAt: number | null;
+  lastMappedUpdateAt: number | null;
+  lastGripperUpdateAt: number | null;
+  telemetrySampleCount: number;
   setHardware: (next: RawHardwareData) => void;
   setMapped: (next: JointPivotMappingOutput) => void;
   setGripper: (next: number) => void;
@@ -38,18 +42,35 @@ let pendingGripper: number | null = null;
 let pendingFlushHandle: ReturnType<typeof setTimeout> | null = null;
 
 function flushRobotUpdates() {
-  const nextState: Partial<Pick<RobotState, 'hardware' | 'mapped' | 'gripper'>> = {};
+  const nextState: Partial<
+    Pick<
+      RobotState,
+      | 'hardware'
+      | 'mapped'
+      | 'gripper'
+      | 'lastHardwareUpdateAt'
+      | 'lastMappedUpdateAt'
+      | 'lastGripperUpdateAt'
+      | 'telemetrySampleCount'
+    >
+  > = {};
+  const now = Date.now();
+  let sampleDelta = 0;
 
   if (pendingHardware !== null) {
     nextState.hardware = pendingHardware;
+    nextState.lastHardwareUpdateAt = now;
+    sampleDelta += 1;
   }
 
   if (pendingMapped !== null) {
     nextState.mapped = pendingMapped;
+    nextState.lastMappedUpdateAt = now;
   }
 
   if (pendingGripper !== null) {
     nextState.gripper = pendingGripper;
+    nextState.lastGripperUpdateAt = now;
   }
 
   pendingHardware = null;
@@ -57,6 +78,9 @@ function flushRobotUpdates() {
   pendingGripper = null;
 
   if (Object.keys(nextState).length > 0) {
+    if (sampleDelta > 0) {
+      nextState.telemetrySampleCount = useRobotStore.getState().telemetrySampleCount + sampleDelta;
+    }
     useRobotStore.setState(nextState);
   }
 }
@@ -96,6 +120,10 @@ export const useRobotStore = create<RobotState>((set) => ({
   hardware: defaultHardware,
   mapped: defaultMapped,
   gripper: 90,
+  lastHardwareUpdateAt: null,
+  lastMappedUpdateAt: null,
+  lastGripperUpdateAt: null,
+  telemetrySampleCount: 0,
   setHardware: (next) => {
     pendingHardware = next;
     scheduleRobotUpdateFlush();

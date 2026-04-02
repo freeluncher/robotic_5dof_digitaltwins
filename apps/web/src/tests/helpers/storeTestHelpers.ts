@@ -14,6 +14,10 @@ export function resetAllStores() {
     hardware: defaultHardwareFixture,
     mapped: defaultMappedFixture,
     gripper: defaultGripperFixture,
+    lastHardwareUpdateAt: null,
+    lastMappedUpdateAt: null,
+    lastGripperUpdateAt: null,
+    telemetrySampleCount: 0,
   });
 
   useUiStore.setState({

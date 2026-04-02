@@ -27,6 +27,10 @@ describe('zustand stores setup', () => {
     expect(state.hardware.wristRoll).toBe(120);
     expect(state.mapped.waist_pivot).toBe(Math.PI / 2);
     expect(state.gripper).toBe(120);
+    expect(state.lastHardwareUpdateAt).not.toBeNull();
+    expect(state.lastMappedUpdateAt).not.toBeNull();
+    expect(state.lastGripperUpdateAt).not.toBeNull();
+    expect(state.telemetrySampleCount).toBe(1);
   });
 
   it('menggabungkan update hardware dan mapped yang datang beruntun dalam satu flush', () => {
@@ -44,6 +48,7 @@ describe('zustand stores setup', () => {
 
     expect(state.hardware.waist).toBe(100);
     expect(state.mapped.wrist_roll_pivot).toBe(Math.PI / 6);
+    expect(state.telemetrySampleCount).toBe(1);
   });
 
   it('membatalkan update robot yang belum di-flush tanpa mengubah state aktif', () => {
@@ -59,6 +64,10 @@ describe('zustand stores setup', () => {
     expect(state.hardware).toEqual(defaultHardwareFixture);
     expect(state.mapped).toEqual(defaultMappedFixture);
     expect(state.gripper).toBe(defaultGripperFixture);
+    expect(state.lastHardwareUpdateAt).toBeNull();
+    expect(state.lastMappedUpdateAt).toBeNull();
+    expect(state.lastGripperUpdateAt).toBeNull();
+    expect(state.telemetrySampleCount).toBe(0);
   });
 
   it('mengelola ui state untuk mode kontrol dan panel', () => {

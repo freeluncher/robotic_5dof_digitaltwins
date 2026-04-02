@@ -2,6 +2,7 @@ import { ROBOTIC_V4_GLB_URL } from './assets/modelAssets';
 import { JointControlPanel } from './components/JointControlPanel';
 import { RobotScene } from './components/RobotScene';
 import { StatusCard } from './components/StatusCard';
+import { TelemetryPanel } from './components/TelemetryPanel';
 import { useDigitalTwinStatus } from './hooks/useDigitalTwinStatus';
 
 function App() {
@@ -24,17 +25,18 @@ function App() {
 
         <aside className="status-panel">
           <JointControlPanel />
+          <TelemetryPanel />
 
           <div className="runtime-snapshot">
-          <h2>Runtime Snapshot</h2>
-          <ul className="status-list">
-            <StatusCard title="Control mode" value={controlMode} />
-            <StatusCard title="Connection" value={connectionLabel} />
-            <StatusCard title="Transport" value={transport} />
-            <StatusCard title="Waist hardware angle" value={waist} />
-            <StatusCard title="GLB asset" value="robotic_v4.glb loaded" />
-          </ul>
-          <p className="asset-path">Asset URL: {ROBOTIC_V4_GLB_URL}</p>
+            <h2>Runtime Snapshot</h2>
+            <ul className="status-list">
+              <StatusCard title="Control mode" value={controlMode} />
+              <StatusCard title="Connection" value={connectionLabel} />
+              <StatusCard title="Transport" value={transport} />
+              <StatusCard title="Waist hardware angle" value={waist} />
+              <StatusCard title="GLB asset" value="robotic_v4.glb loaded" />
+            </ul>
+            <p className="asset-path">Asset URL: {ROBOTIC_V4_GLB_URL}</p>
           </div>
         </aside>
       </section>
