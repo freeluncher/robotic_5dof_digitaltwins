@@ -39,6 +39,32 @@ public class TelemetryControllerTests : IClassFixture<WebApplicationFactory<Prog
     }
 
     [Fact]
+    public async Task Publish_joint_state_returns_signalr_envelope_contract_for_valid_payload()
+    {
+        using var client = _factory.CreateClient();
+
+        var payload = new
+        {
+            waist = 90,
+            shoulder = 45,
+            elbow = 110,
+            wristRoll = 80,
+            wrist = 70,
+        };
+
+        using var response = await client.PostAsJsonAsync("/api/telemetry/joint-state", payload);
+        var envelope = await response.Content.ReadFromJsonAsync<SignalREventEnvelope<TelemetryJointStatePayload>>();
+
+        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+        Assert.Equal("application/json", response.Content.Headers.ContentType?.MediaType);
+        Assert.NotNull(envelope);
+        Assert.Equal(SignalREventName.TelemetryJointState, envelope!.EventName);
+        Assert.Equal("api", envelope.Source);
+        Assert.Equal(90, envelope.Payload.Hardware.Waist);
+        Assert.Equal(1.5707963267948966, envelope.Payload.Mapped.WaistPivot, 12);
+    }
+
+    [Fact]
     public async Task Publish_joint_state_returns_bad_request_for_out_of_range_payload()
     {
         using var client = _factory.CreateClient();

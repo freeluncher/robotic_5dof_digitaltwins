@@ -8,7 +8,7 @@ import {
   updatedMappedFixture,
 } from '../tests/fixtures/storeFixtures';
 import { useConnectivityStore } from './connectivityStore';
-import { flushRobotStoreUpdates, useRobotStore } from './robotStore';
+import { cancelRobotStoreUpdates, flushRobotStoreUpdates, useRobotStore } from './robotStore';
 import { useUiStore } from './uiStore';
 
 describe('zustand stores setup', () => {
@@ -40,6 +40,19 @@ describe('zustand stores setup', () => {
 
     expect(state.hardware.waist).toBe(100);
     expect(state.mapped.wrist_roll_pivot).toBe(Math.PI / 6);
+  });
+
+  it('membatalkan update robot yang belum di-flush tanpa mengubah state aktif', () => {
+    resetAllStores();
+
+    useRobotStore.getState().setHardware(updatedHardwareFixture);
+    useRobotStore.getState().setMapped(updatedMappedFixture);
+    cancelRobotStoreUpdates();
+
+    const state = useRobotStore.getState();
+
+    expect(state.hardware).toEqual(defaultHardwareFixture);
+    expect(state.mapped).toEqual(defaultMappedFixture);
   });
 
   it('mengelola ui state untuk mode kontrol dan panel', () => {

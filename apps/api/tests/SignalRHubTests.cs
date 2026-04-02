@@ -1,5 +1,6 @@
 using System.Net;
 using System.Threading.Channels;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.AspNetCore.Mvc.Testing;
 using RoboticV4.Api.Hubs;
@@ -67,6 +68,53 @@ public class SignalRHubTests : IClassFixture<WebApplicationFactory<Program>>
 
         Assert.Equal(90, forwardedTargets.HardwareTargets.Waist);
         Assert.Equal(110, forwardedTargets.HardwareTargets.Elbow);
+    }
+
+    [Fact]
+    public async Task Telemetry_hub_submit_control_command_relays_gripper_payload_to_other_clients()
+    {
+        var gripperChannel = Channel.CreateUnbounded<ControlSetGripperPayload>();
+
+        await using var senderConnection = CreateHubConnection();
+        await using var receiverConnection = CreateHubConnection();
+
+        receiverConnection.On<ControlSetGripperPayload>(nameof(IRobotTelemetryClient.ControlSetGripper), payload =>
+        {
+            gripperChannel.Writer.TryWrite(payload);
+        });
+
+        await senderConnection.StartAsync();
+        await receiverConnection.StartAsync();
+
+        var envelope = new SignalREventEnvelope<ControlCommandRequestedPayload>(
+            EventName: SignalREventName.ControlCommandRequested,
+            MessageId: $"cmd-{Guid.NewGuid():N}",
+            TimestampUtc: DateTimeOffset.UtcNow,
+            Source: "web",
+            Payload: new ControlCommandRequestedPayload(
+                CommandName: SignalREventName.ControlSetGripper,
+                HardwareTargets: null,
+                OpenRatio: 0.65));
+
+        await senderConnection.InvokeAsync(nameof(RobotTelemetryHub.SubmitControlCommand), envelope);
+
+        var forwardedGripper = await ReadWithTimeout(gripperChannel.Reader);
+
+        Assert.Equal(0.65, forwardedGripper.OpenRatio, 12);
+    }
+
+    private static async Task<T> ReadWithTimeout<T>(ChannelReader<T> reader)
+    {
+        var readTask = reader.ReadAsync().AsTask();
+        var timeoutTask = Task.Delay(5000);
+        var completedTask = await Task.WhenAny(readTask, timeoutTask);
+
+        if (completedTask == timeoutTask)
+        {
+            throw new TimeoutException("Timed out waiting for SignalR event payload.");
+        }
+
+        return await readTask;
     }
 
     private HubConnection CreateHubConnection()

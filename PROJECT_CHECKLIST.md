@@ -121,10 +121,10 @@ Membangun aplikasi Digital Twin untuk Robotic Arm 5 DOF (robotic_v4) yang memung
 - [x] Siapkan Vitest untuk frontend.
 - [x] Siapkan xUnit untuk backend.
 - [x] Tambahkan test unit untuk utility kinematics.
-- [ ] Tambahkan test unit untuk state store Zustand.
-- [ ] Tambahkan test integrasi untuk backend API.
-- [ ] Tambahkan test integrasi untuk SignalR hub.
-- [ ] Tambahkan test kontrak untuk shared schema.
+- [x] Tambahkan test unit untuk state store Zustand.
+- [x] Tambahkan test integrasi untuk backend API.
+- [x] Tambahkan test integrasi untuk SignalR hub.
+- [x] Tambahkan test kontrak untuk shared schema.
 - [ ] Tambahkan coverage target minimum.
 
 ## 10. Dokumentasi Otomatis
