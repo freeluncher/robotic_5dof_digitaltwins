@@ -30,6 +30,40 @@ public class ContractsCompatibilityTests
     }
 
     [Fact]
+    public void Esp32HardwareInput_contract_deserializes_from_shared_shape()
+    {
+        const string json = """
+        {
+          "deviceId": "esp32-arm-01",
+          "firmwareVersion": "1.2.0",
+          "sequence": 128,
+          "sentAtUtc": "2026-04-02T08:00:00Z",
+          "transport": "serial",
+          "payload": {
+            "waist": 90,
+            "shoulder": 45,
+            "elbow": 110,
+            "wristRoll": 80,
+            "wrist": 70
+          },
+          "checksumCrc16": "A1F0"
+        }
+        """;
+
+        var model = JsonSerializer.Deserialize<Esp32HardwareInput>(json, new JsonSerializerOptions
+        {
+            PropertyNameCaseInsensitive = true,
+        });
+
+        Assert.NotNull(model);
+        Assert.Equal("esp32-arm-01", model!.DeviceId);
+        Assert.Equal(128, model.Sequence);
+        Assert.Equal("serial", model.Transport);
+        Assert.Equal(110, model.Payload.Elbow);
+        Assert.Equal("A1F0", model.ChecksumCrc16);
+    }
+
+    [Fact]
     public void SignalR_envelope_contract_deserializes_from_shared_shape()
     {
         const string json = """

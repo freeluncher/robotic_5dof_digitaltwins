@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 
 import dtoCatalog from '../../../../shared/contracts/dto-catalog.json';
 import dtoSchema from '../../../../shared/contracts/dto.schema.json';
+import type { Esp32HardwareInput } from '../../../../shared/contracts/esp32-hardware-input';
 import type { JointPivotMappingOutput } from '../../../../shared/contracts/joint-pivot-mapping-output';
 import type { RawHardwareData } from '../../../../shared/contracts/raw-hardware-data';
 import {
@@ -25,6 +26,28 @@ describe('shared contract compatibility (frontend)', () => {
 
     expect(hardware.waist).toBeTypeOf('number');
     expect(hardware.wristRoll).toBeTypeOf('number');
+  });
+
+  it('memastikan shape Esp32HardwareInput stabil untuk ingest telemetry perangkat', () => {
+    const esp32Input: Esp32HardwareInput = {
+      deviceId: 'esp32-arm-01',
+      firmwareVersion: '1.2.0',
+      sequence: 128,
+      sentAtUtc: '2026-04-02T08:00:00Z',
+      transport: 'serial',
+      payload: {
+        waist: 90,
+        shoulder: 45,
+        elbow: 100,
+        wristRoll: 80,
+        wrist: 70,
+      },
+      checksumCrc16: 'A1F0',
+    };
+
+    expect(esp32Input.deviceId).toBe('esp32-arm-01');
+    expect(esp32Input.payload.wrist).toBeTypeOf('number');
+    expect(esp32Input.transport).toBe('serial');
   });
 
   it('memastikan shape JointPivotMappingOutput tetap kompatibel untuk animasi pivot', () => {
@@ -140,7 +163,7 @@ describe('shared contract compatibility (frontend)', () => {
 
   it('memastikan metadata DTO untuk generator dokumentasi tersedia', () => {
     expect(Array.isArray(dtoCatalog.contracts)).toBe(true);
-    expect(dtoCatalog.contracts.length).toBeGreaterThanOrEqual(3);
-    expect(dtoSchema.oneOf.length).toBeGreaterThanOrEqual(3);
+    expect(dtoCatalog.contracts.length).toBeGreaterThanOrEqual(4);
+    expect(dtoSchema.oneOf.length).toBeGreaterThanOrEqual(4);
   });
 });

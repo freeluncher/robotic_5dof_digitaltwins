@@ -11,6 +11,13 @@
       "schema": "./raw-hardware-data.schema.json"
     },
     {
+      "name": "Esp32HardwareInput",
+      "category": "dto.input.hardware",
+      "typescript": "./esp32-hardware-input.ts",
+      "csharp": "./Esp32HardwareInput.cs",
+      "schema": "./esp32-hardware-input.schema.json"
+    },
+    {
       "name": "JointPivotMappingOutput",
       "category": "dto.output",
       "typescript": "./joint-pivot-mapping-output.ts",

@@ -9,6 +9,11 @@ Folder ini menyimpan kontrak yang dipakai bersama frontend dan backend.
 	- JSON Schema: `raw-hardware-data.schema.json`
 	- C#: `RawHardwareData.cs`
 
+- Esp32HardwareInput:
+	- TypeScript: `esp32-hardware-input.ts`
+	- JSON Schema: `esp32-hardware-input.schema.json`
+	- C#: `Esp32HardwareInput.cs`
+
 - JointPivotMappingOutput:
 	- TypeScript: `joint-pivot-mapping-output.ts`
 	- JSON Schema: `joint-pivot-mapping-output.schema.json`
@@ -44,6 +49,34 @@ Mapping ke pivot scene:
 - `elbow` -> `elbow_pivot`
 - `wristRoll` -> `wrist_roll_pivot`
 - `wrist` -> `wrist_pivot`
+
+### Esp32HardwareInput Shape
+
+Payload ini adalah envelope input dari perangkat ESP32 ke backend. Ia membawa metadata paket plus isi sudut joint mentah pada `payload`.
+
+```json
+{
+	"deviceId": "esp32-arm-01",
+	"firmwareVersion": "1.2.0",
+	"sequence": 128,
+	"sentAtUtc": "2026-04-02T08:00:00Z",
+	"transport": "serial",
+	"payload": {
+		"waist": 90,
+		"shoulder": 45,
+		"elbow": 110,
+		"wristRoll": 80,
+		"wrist": 70
+	},
+	"checksumCrc16": "A1F0"
+}
+```
+
+Catatan:
+
+- `sequence` dipakai untuk deteksi paket hilang/duplikat di layer backend.
+- `sentAtUtc` memudahkan tracing latency dari perangkat ke API.
+- `payload` memakai shape `RawHardwareData` agar mapping kinematics tetap reusable.
 
 ### JointPivotMappingOutput Shape
 
