@@ -4,6 +4,8 @@ import type { JointPivotMappingOutput } from '../../../../shared/contracts/joint
 import type { RawHardwareData } from '../../../../shared/contracts/raw-hardware-data';
 
 const ROBOT_UPDATE_THROTTLE_MS = 16;
+const GRIPPER_MIN = 90;
+const GRIPPER_MAX = 180;
 
 const defaultHardware: RawHardwareData = {
   waist: 90,
@@ -103,7 +105,7 @@ export const useRobotStore = create<RobotState>((set) => ({
     scheduleRobotUpdateFlush();
   },
   setGripper: (next) => {
-    pendingGripper = next;
+    pendingGripper = Math.min(GRIPPER_MAX, Math.max(GRIPPER_MIN, next));
     scheduleRobotUpdateFlush();
   },
 }));

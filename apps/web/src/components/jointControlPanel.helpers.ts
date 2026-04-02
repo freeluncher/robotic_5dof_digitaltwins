@@ -4,7 +4,7 @@ export type JointField = keyof RawHardwareData;
 
 const HARDWARE_MIN = 0;
 const HARDWARE_MAX = 180;
-const GRIPPER_MIN = 0;
+const GRIPPER_MIN = 90;
 const GRIPPER_MAX = 180;
 
 export function clampHardwareAngle(value: number): number {

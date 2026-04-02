@@ -22,6 +22,7 @@ const tempGearDeltaQuaternion = new Quaternion();
 const GRIPPER_COUPLING_RATIO = 1;
 
 const GRIPPER_NEUTRAL_DEG = 90;
+const GRIPPER_MAX_DEG = 180;
 
 function applyAxisAngleInParentSpace(node: Object3D, axisInParentSpace: Vector3, angle: number): void {
   tempWristQuaternion.setFromAxisAngle(axisInParentSpace, angle);
@@ -155,7 +156,8 @@ export function applyGripperGearRotation(root: Object3D, gripperDeg: number): bo
     return false;
   }
 
-  const angleRad = ((gripperDeg - GRIPPER_NEUTRAL_DEG) * Math.PI) / 180;
+  const clampedGripperDeg = Math.min(GRIPPER_MAX_DEG, Math.max(GRIPPER_NEUTRAL_DEG, gripperDeg));
+  const angleRad = ((clampedGripperDeg - GRIPPER_NEUTRAL_DEG) * Math.PI) / 180;
   applyBisectorRotationWithBase(leftTarget, angleRad, '__gearBaseQuaternion');
   applyBisectorRotationWithBase(rightTarget, -angleRad, '__gearBaseQuaternion');
 

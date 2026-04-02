@@ -34,8 +34,9 @@ describe('joint control panel helpers', () => {
     });
   });
 
-  it('clamps gripper angle to 0..180', () => {
-    expect(clampGripperAngle(-30)).toBe(0);
+  it('clamps gripper angle to 90..180', () => {
+    expect(clampGripperAngle(-30)).toBe(90);
+    expect(clampGripperAngle(30)).toBe(90);
     expect(clampGripperAngle(90)).toBe(90);
     expect(clampGripperAngle(220)).toBe(180);
   });

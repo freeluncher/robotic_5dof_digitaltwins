@@ -93,7 +93,7 @@ export function JointControlPanel() {
           <span className="joint-label">Gripper (Gear L/R)</span>
           <input
             type="range"
-            min={0}
+            min={90}
             max={180}
             step={1}
             value={gripper}

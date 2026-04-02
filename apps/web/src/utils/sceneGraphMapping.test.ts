@@ -142,9 +142,9 @@ describe('scene graph joint mapping', () => {
     const halfAngleSin = Math.sin(Math.PI / 12);
     const halfAngleCos = Math.cos(Math.PI / 12);
     const bisectorComponent = halfAngleSin / Math.sqrt(2);
-    const gripperHalfAngleSin = Math.sin((Math.PI / 6) * 0.45 * 0.5);
-    const gripperHalfAngleCos = Math.cos((Math.PI / 6) * 0.45 * 0.5);
-    const gripperBisectorComponent = gripperHalfAngleSin / Math.sqrt(2);
+    const gripperHalfAngleSin = halfAngleSin;
+    const gripperHalfAngleCos = halfAngleCos;
+    const gripperBisectorComponent = bisectorComponent;
 
     expect(applied).toBe(true);
     expect(gearLPivot.quaternion.x).toBeCloseTo(0, 12);
