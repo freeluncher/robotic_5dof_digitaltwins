@@ -14,13 +14,13 @@ public sealed class TelemetryController : ControllerBase
     private readonly ILogger<TelemetryController> _logger;
     private readonly IHardwareDataValidator _validator;
     private readonly IRobotTelemetryService _telemetryService;
-    private readonly IHubContext<RobotTelemetryHub> _hub;
+    private readonly IHubContext<RobotTelemetryHub, IRobotTelemetryClient> _hub;
 
     public TelemetryController(
         ILogger<TelemetryController> logger,
         IHardwareDataValidator validator,
         IRobotTelemetryService telemetryService,
-        IHubContext<RobotTelemetryHub> hub)
+        IHubContext<RobotTelemetryHub, IRobotTelemetryClient> hub)
     {
         _logger = logger;
         _validator = validator;
@@ -49,10 +49,7 @@ public sealed class TelemetryController : ControllerBase
 
         var envelope = _telemetryService.CreateJointStateTelemetry(request);
 
-        await _hub.Clients.All.SendAsync(
-            SignalREventName.TelemetryJointState,
-            envelope,
-            cancellationToken);
+        await _hub.Clients.All.TelemetryJointStateUpdated(envelope);
 
         return Ok(envelope);
     }

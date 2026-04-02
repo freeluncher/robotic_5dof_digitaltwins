@@ -108,7 +108,7 @@ Membangun aplikasi Digital Twin untuk Robotic Arm 5 DOF (robotic_v4) yang memung
 
 ## 8. SignalR dan Realtime
 
-- [ ] Buat SignalR hub untuk telemetry robot.
+- [x] Buat SignalR hub untuk telemetry robot.
 - [ ] Definisikan event untuk joint angle update.
 - [ ] Definisikan event untuk status koneksi hardware.
 - [ ] Definisikan event untuk command dari UI ke backend.
