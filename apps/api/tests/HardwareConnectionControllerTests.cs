@@ -32,6 +32,11 @@ public class HardwareConnectionControllerTests : IClassFixture<WebApplicationFac
         Assert.NotNull(envelope);
         Assert.Equal(SignalREventName.TelemetryJointState, envelope!.EventName);
         Assert.Equal(90, envelope.Payload.Hardware.Waist);
+        Assert.Equal(Math.PI / 2d, envelope.Payload.Mapped.WaistPivot, 12);
+        Assert.Equal(Math.PI / 4d, envelope.Payload.Mapped.ShoulderPivot, 12);
+        Assert.Equal((110d * Math.PI) / 180d, envelope.Payload.Mapped.ElbowPivot, 12);
+        Assert.Equal((80d * Math.PI) / 180d, envelope.Payload.Mapped.WristRollPivot, 12);
+        Assert.Equal((70d * Math.PI) / 180d, envelope.Payload.Mapped.WristPivot, 12);
     }
 
     [Fact]
@@ -56,6 +61,7 @@ public class HardwareConnectionControllerTests : IClassFixture<WebApplicationFac
 
         var connectionStateChannel = Channel.CreateUnbounded<SignalREventEnvelope<TelemetryConnectionStatePayload>>();
         var jointStateChannel = Channel.CreateUnbounded<SignalREventEnvelope<TelemetryJointStatePayload>>();
+        var jointAngleChannel = Channel.CreateUnbounded<SignalREventEnvelope<TelemetryJointAngleUpdatePayload>>();
 
         await using var connection = CreateHubConnection();
 
@@ -69,6 +75,11 @@ public class HardwareConnectionControllerTests : IClassFixture<WebApplicationFac
             jointStateChannel.Writer.TryWrite(envelope);
         });
 
+        connection.On<SignalREventEnvelope<TelemetryJointAngleUpdatePayload>>(nameof(IRobotTelemetryClient.TelemetryJointAngleUpdated), envelope =>
+        {
+            jointAngleChannel.Writer.TryWrite(envelope);
+        });
+
         await connection.StartAsync();
 
         using var response = await client.PostAsJsonAsync("/api/hardware/ingest", CreateValidFirmwarePacket());
@@ -79,10 +90,16 @@ public class HardwareConnectionControllerTests : IClassFixture<WebApplicationFac
             envelope => envelope.Payload.Transport == "serial" && envelope.Payload.Reason == "hardware-frame-received");
 
         var jointState = await ReadWithTimeout(jointStateChannel.Reader);
+        var jointAngle = await ReadWithTimeout(jointAngleChannel.Reader);
 
         Assert.True(hardwareConnectionState.Payload.IsConnected);
         Assert.Equal("serial", hardwareConnectionState.Payload.Transport);
         Assert.Equal(90, jointState.Payload.Hardware.Waist);
+        Assert.Equal(Math.PI / 2d, jointAngle.Payload.Mapped.WaistPivot, 12);
+        Assert.Equal(Math.PI / 4d, jointAngle.Payload.Mapped.ShoulderPivot, 12);
+        Assert.Equal((110d * Math.PI) / 180d, jointAngle.Payload.Mapped.ElbowPivot, 12);
+        Assert.Equal((80d * Math.PI) / 180d, jointAngle.Payload.Mapped.WristRollPivot, 12);
+        Assert.Equal((70d * Math.PI) / 180d, jointAngle.Payload.Mapped.WristPivot, 12);
     }
 
     private FirmwareSerializedPacket CreateValidFirmwarePacket()

@@ -141,7 +141,7 @@ Membangun aplikasi Digital Twin untuk Robotic Arm 5 DOF (robotic_v4) yang memung
 - [x] Definisikan format input dari hardware ESP32.
 - [x] Definisikan format data serialisasi dari firmware ke backend.
 - [x] Implementasikan koneksi hardware ke backend.
-- [ ] Verifikasi mapping data hardware ke joint robot.
+- [x] Verifikasi mapping data hardware ke joint robot.
 - [ ] Tambahkan simulasi data untuk mode development tanpa hardware.
 - [ ] Tambahkan test untuk kondisi hardware disconnect dan reconnect.
 
