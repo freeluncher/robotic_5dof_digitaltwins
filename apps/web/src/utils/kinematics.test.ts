@@ -139,3 +139,19 @@ it('menghasilkan delta 0 rad saat hardware berada di posisi netral 90°', () => 
   expect(mapped.wrist_roll_pivot).toBe(0);
   expect(mapped.wrist_pivot).toBe(0);
 });
+
+it('menghasilkan delta radian yang konsisten saat hardware bergeser dari posisi netral', () => {
+  const mapped = mapHardwareToPivotDeltaFromNeutral({
+    waist: 120,
+    shoulder: 60,
+    elbow: 30,
+    wristRoll: 150,
+    wrist: 75,
+  });
+
+  expect(mapped.waist_pivot).toBeCloseTo(convertToRadians(30), 12);
+  expect(mapped.shoulder_pivot).toBeCloseTo(convertToRadians(-30), 12);
+  expect(mapped.elbow_pivot).toBeCloseTo(convertToRadians(-60), 12);
+  expect(mapped.wrist_roll_pivot).toBeCloseTo(convertToRadians(60), 12);
+  expect(mapped.wrist_pivot).toBeCloseTo(convertToRadians(-15), 12);
+});

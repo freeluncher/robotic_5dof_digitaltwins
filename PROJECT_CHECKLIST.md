@@ -120,7 +120,7 @@ Membangun aplikasi Digital Twin untuk Robotic Arm 5 DOF (robotic_v4) yang memung
 - [x] Terapkan pola Red-Green-Refactor di root README.
 - [x] Siapkan Vitest untuk frontend.
 - [x] Siapkan xUnit untuk backend.
-- [ ] Tambahkan test unit untuk utility kinematics.
+- [x] Tambahkan test unit untuk utility kinematics.
 - [ ] Tambahkan test unit untuk state store Zustand.
 - [ ] Tambahkan test integrasi untuk backend API.
 - [ ] Tambahkan test integrasi untuk SignalR hub.
