@@ -1,0 +1,88 @@
+# -----------------------------
+# OS and Editor noise
+# -----------------------------
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# VS Code local workspace files
+.vscode/*.code-workspace
+
+# Visual Studio / Rider
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.rsuser
+
+# -----------------------------
+# Node.js / Frontend (Vite)
+# -----------------------------
+node_modules/
+apps/**/node_modules/
+
+dist/
+build/
+apps/**/dist/
+apps/**/build/
+
+.vite/
+apps/**/.vite/
+
+coverage/
+apps/**/coverage/
+.nyc_output/
+
+*.tsbuildinfo
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# -----------------------------
+# .NET / C# build outputs
+# -----------------------------
+bin/
+obj/
+apps/**/bin/
+apps/**/obj/
+
+TestResults/
+*.coverage
+*.coveragexml
+*.trx
+
+# -----------------------------
+# Tooling caches
+# -----------------------------
+.eslintcache
+.stylelintcache
+.cache/
+tmp/
+temp/
+
+# -----------------------------
+# Environment and secrets
+# -----------------------------
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# Local development settings (optional)
+*.local
+
+# -----------------------------
+# Generated packages / archives
+# -----------------------------
+*.nupkg
+*.snupkg
+
+# -----------------------------
+# Blender autosave / backup files
+# Keep source assets tracked, ignore only temp backups.
+# -----------------------------
+*.blend1
+*.blend2
+*.blend@
