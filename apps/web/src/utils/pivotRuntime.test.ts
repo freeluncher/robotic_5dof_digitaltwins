@@ -30,8 +30,10 @@ describe('pivot runtime verification and application', () => {
 
     expect(nodes.waist_pivot.rotation.y).toBe(mappedFixtureRadians.waist_pivot);
     expect(nodes.waist_pivot.rotation.z).toBe(0);
-    expect(nodes.shoulder_pivot.rotation.z).toBe(mappedFixtureRadians.shoulder_pivot);
-    expect(nodes.elbow_pivot.rotation.z).toBe(mappedFixtureRadians.elbow_pivot);
+    expect(nodes.shoulder_pivot.rotation.x).toBe(mappedFixtureRadians.shoulder_pivot);
+    expect(nodes.shoulder_pivot.rotation.z).toBe(0);
+    expect(nodes.elbow_pivot.rotation.x).toBe(mappedFixtureRadians.elbow_pivot);
+    expect(nodes.elbow_pivot.rotation.z).toBe(0);
     expect(nodes.wrist_roll_pivot.rotation.y).toBe(mappedFixtureRadians.wrist_roll_pivot);
     expect(nodes.wrist_roll_pivot.rotation.z).toBe(0);
     expect(nodes.wrist_pivot.rotation.z).toBe(mappedFixtureRadians.wrist_pivot);

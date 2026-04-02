@@ -59,10 +59,12 @@ describe('scene graph joint mapping', () => {
 
     expect(root.getObjectByName('waist_pivot')?.rotation.y).toBe(mappedFixtureRadians.waist_pivot);
     expect(root.getObjectByName('waist_pivot')?.rotation.z).toBe(0);
-    expect(root.getObjectByName('shoulder_pivot')?.rotation.z).toBe(
+    expect(root.getObjectByName('shoulder_pivot')?.rotation.x).toBe(
       mappedFixtureRadians.shoulder_pivot,
     );
-    expect(root.getObjectByName('elbow_pivot')?.rotation.z).toBe(mappedFixtureRadians.elbow_pivot);
+    expect(root.getObjectByName('shoulder_pivot')?.rotation.z).toBe(0);
+    expect(root.getObjectByName('elbow_pivot')?.rotation.x).toBe(mappedFixtureRadians.elbow_pivot);
+    expect(root.getObjectByName('elbow_pivot')?.rotation.z).toBe(0);
     expect(root.getObjectByName('wrist_roll_pivot')?.rotation.y).toBe(
       mappedFixtureRadians.wrist_roll_pivot,
     );
