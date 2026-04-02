@@ -1,3 +1,4 @@
+import { ROBOTIC_V4_GLB_URL } from './assets/modelAssets';
 import { StatusCard } from './components/StatusCard';
 import { useDigitalTwinStatus } from './hooks/useDigitalTwinStatus';
 
@@ -20,6 +21,7 @@ function App() {
             <div className="viewport-crosshair" />
             <span className="viewport-label">3D VIEWPORT PLACEHOLDER</span>
             <span className="viewport-sub">Ready for GLB + R3F scene mount</span>
+            <span className="asset-chip">GLB imported in pipeline</span>
           </div>
         </article>
 
@@ -30,7 +32,9 @@ function App() {
             <StatusCard title="Connection" value={connectionLabel} />
             <StatusCard title="Transport" value={transport} />
             <StatusCard title="Waist hardware angle" value={waist} />
+            <StatusCard title="GLB asset" value="robotic_v4.glb loaded" />
           </ul>
+          <p className="asset-path">Asset URL: {ROBOTIC_V4_GLB_URL}</p>
         </aside>
       </section>
     </main>
