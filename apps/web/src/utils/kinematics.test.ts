@@ -67,3 +67,12 @@ it('memetakan data wrist ke wrist_pivot pada batas aman 0°-180°', () => {
 
   expect(mapped.wrist_pivot).toBe(convertToRadians(hardwareFixtureLinear.wrist));
 });
+
+/**
+ * Guard mekanik memastikan input hardware tidak keluar envelope 0°-180°.
+ * Jika nilai melewati batas, fungsi harus menolak data agar rotasi tidak merusak simulasi kinematika.
+ */
+it('melempar error saat nilai hardware berada di luar rentang aman 0°-180°', () => {
+  expect(() => mapHardwareToPivot({ ...hardwareFixtureLinear, waist: -1 })).toThrow(RangeError);
+  expect(() => mapHardwareToPivot({ ...hardwareFixtureLinear, shoulder: 181 })).toThrow(RangeError);
+});
