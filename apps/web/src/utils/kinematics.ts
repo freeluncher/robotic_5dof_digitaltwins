@@ -3,6 +3,7 @@ import type { RawHardwareData } from '../../../../shared/contracts/raw-hardware-
 
 const HARDWARE_MIN_DEG = 0;
 const HARDWARE_MAX_DEG = 180;
+const HARDWARE_NEUTRAL_DEG = 90;
 
 function assertHardwareValue(joint: string, value: unknown): asserts value is number {
   if (typeof value !== 'number' || Number.isNaN(value) || !Number.isFinite(value)) {
@@ -39,5 +40,18 @@ export function mapHardwareToPivot(data: RawHardwareData): JointPivotMappingOutp
     elbow_pivot: convertToRadians(data.elbow),
     wrist_roll_pivot: convertToRadians(data.wristRoll),
     wrist_pivot: convertToRadians(data.wrist),
+  };
+}
+
+export function mapHardwareToPivotDeltaFromNeutral(data: RawHardwareData): JointPivotMappingOutput {
+  const mapped = mapHardwareToPivot(data);
+  const neutralRad = convertToRadians(HARDWARE_NEUTRAL_DEG);
+
+  return {
+    waist_pivot: mapped.waist_pivot - neutralRad,
+    shoulder_pivot: mapped.shoulder_pivot - neutralRad,
+    elbow_pivot: mapped.elbow_pivot - neutralRad,
+    wrist_roll_pivot: mapped.wrist_roll_pivot - neutralRad,
+    wrist_pivot: mapped.wrist_pivot - neutralRad,
   };
 }

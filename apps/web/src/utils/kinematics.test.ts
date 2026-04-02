@@ -6,7 +6,11 @@ import {
   hardwareFixtureMax,
   hardwareFixtureMin,
 } from '../tests/fixtures/kinematicsFixtures';
-import { convertToRadians, mapHardwareToPivot } from './kinematics';
+import {
+  convertToRadians,
+  mapHardwareToPivot,
+  mapHardwareToPivotDeltaFromNeutral,
+} from './kinematics';
 
 /**
  * waist_pivot, shoulder_pivot, elbow_pivot, wrist_roll_pivot, dan wrist_pivot semuanya masih berada di envelope hardware 0°-180°.
@@ -118,4 +122,20 @@ it('melempar error untuk input invalid seperti null, undefined, dan NaN', () => 
       wrist: undefined as unknown as never,
     }),
   ).toThrow(TypeError);
+});
+
+it('menghasilkan delta 0 rad saat hardware berada di posisi netral 90°', () => {
+  const mapped = mapHardwareToPivotDeltaFromNeutral({
+    waist: 90,
+    shoulder: 90,
+    elbow: 90,
+    wristRoll: 90,
+    wrist: 90,
+  });
+
+  expect(mapped.waist_pivot).toBe(0);
+  expect(mapped.shoulder_pivot).toBe(0);
+  expect(mapped.elbow_pivot).toBe(0);
+  expect(mapped.wrist_roll_pivot).toBe(0);
+  expect(mapped.wrist_pivot).toBe(0);
 });

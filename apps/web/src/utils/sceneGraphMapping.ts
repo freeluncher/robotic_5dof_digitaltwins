@@ -1,11 +1,24 @@
 import type { Object3D } from 'three';
 
 import type { JointPivotMappingOutput } from '../../../../shared/contracts/joint-pivot-mapping-output';
+import { ROTATION_MAPPING_BY_PIVOT } from './jointRotationAxes';
 import { REQUIRED_MAIN_PIVOTS } from './pivotRuntime';
 
 type MainPivotName = (typeof REQUIRED_MAIN_PIVOTS)[number];
 
 export type MainPivotLookup = Record<MainPivotName, Object3D>;
+
+export function countDetectedMainPivots(root: Object3D): number {
+  let count = 0;
+
+  for (const pivotName of REQUIRED_MAIN_PIVOTS) {
+    if (root.getObjectByName(pivotName)) {
+      count += 1;
+    }
+  }
+
+  return count;
+}
 
 export function mapMainJointPivots(root: Object3D): MainPivotLookup {
   const lookup = {} as MainPivotLookup;
@@ -30,9 +43,16 @@ export function mapMainJointPivots(root: Object3D): MainPivotLookup {
 export function applyJointMappingToSceneGraph(root: Object3D, mapped: JointPivotMappingOutput): void {
   const pivots = mapMainJointPivots(root);
 
-  pivots.waist_pivot.rotation.z = mapped.waist_pivot;
-  pivots.shoulder_pivot.rotation.z = mapped.shoulder_pivot;
-  pivots.elbow_pivot.rotation.z = mapped.elbow_pivot;
-  pivots.wrist_roll_pivot.rotation.z = mapped.wrist_roll_pivot;
-  pivots.wrist_pivot.rotation.z = mapped.wrist_pivot;
+  const valueByPivot = {
+    waist_pivot: mapped.waist_pivot,
+    shoulder_pivot: mapped.shoulder_pivot,
+    elbow_pivot: mapped.elbow_pivot,
+    wrist_roll_pivot: mapped.wrist_roll_pivot,
+    wrist_pivot: mapped.wrist_pivot,
+  };
+
+  for (const pivotName of REQUIRED_MAIN_PIVOTS) {
+    const mapping = ROTATION_MAPPING_BY_PIVOT[pivotName];
+    pivots[pivotName].rotation[mapping.axis] = valueByPivot[pivotName] * mapping.direction;
+  }
 }

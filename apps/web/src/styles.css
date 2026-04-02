@@ -78,6 +78,34 @@ h2 {
   height: 420px !important;
 }
 
+.scene-debug-overlay {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  min-width: 168px;
+  pointer-events: none;
+  padding: 0.5rem 0.65rem;
+  border-radius: 0.45rem;
+  border: 1px solid rgba(13, 42, 67, 0.25);
+  background: rgba(255, 255, 255, 0.88);
+  color: #0f172a;
+  font-family: "Consolas", "Courier New", monospace;
+  font-size: 0.72rem;
+  line-height: 1.35;
+}
+
+.scene-debug-overlay p {
+  margin: 0;
+  font-weight: 700;
+  color: #102a43;
+}
+
+.scene-debug-overlay ul {
+  margin: 0.3rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
 .status-panel {
   padding: 1rem;
 }

@@ -28,10 +28,12 @@ describe('pivot runtime verification and application', () => {
 
     applyMappedRotationsToPivots(nodes, mappedFixtureRadians);
 
-    expect(nodes.waist_pivot.rotation.z).toBe(mappedFixtureRadians.waist_pivot);
+    expect(nodes.waist_pivot.rotation.y).toBe(mappedFixtureRadians.waist_pivot);
+    expect(nodes.waist_pivot.rotation.z).toBe(0);
     expect(nodes.shoulder_pivot.rotation.z).toBe(mappedFixtureRadians.shoulder_pivot);
     expect(nodes.elbow_pivot.rotation.z).toBe(mappedFixtureRadians.elbow_pivot);
-    expect(nodes.wrist_roll_pivot.rotation.z).toBe(mappedFixtureRadians.wrist_roll_pivot);
+    expect(nodes.wrist_roll_pivot.rotation.y).toBe(mappedFixtureRadians.wrist_roll_pivot);
+    expect(nodes.wrist_roll_pivot.rotation.z).toBe(0);
     expect(nodes.wrist_pivot.rotation.z).toBe(mappedFixtureRadians.wrist_pivot);
 
     // Mesh link is intentionally untouched to enforce pivot-only rotation updates.

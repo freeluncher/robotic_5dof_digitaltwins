@@ -2,7 +2,11 @@ import { Group, Object3D } from 'three';
 import { describe, expect, it } from 'vitest';
 
 import { mappedFixtureRadians } from '../tests/fixtures/kinematicsFixtures';
-import { applyJointMappingToSceneGraph, mapMainJointPivots } from './sceneGraphMapping';
+import {
+  applyJointMappingToSceneGraph,
+  countDetectedMainPivots,
+  mapMainJointPivots,
+} from './sceneGraphMapping';
 
 function createNode(name: string): Object3D {
   const node = new Group();
@@ -24,6 +28,12 @@ function createRobotRoot(): Group {
 }
 
 describe('scene graph joint mapping', () => {
+  it('menghitung jumlah pivot utama yang terdeteksi di scene graph', () => {
+    const root = createRobotRoot();
+
+    expect(countDetectedMainPivots(root)).toBe(5);
+  });
+
   it('memetakan 5 joint utama ke pivot node Three.js', () => {
     const root = createRobotRoot();
 
@@ -47,14 +57,16 @@ describe('scene graph joint mapping', () => {
 
     applyJointMappingToSceneGraph(root, mappedFixtureRadians);
 
-    expect(root.getObjectByName('waist_pivot')?.rotation.z).toBe(mappedFixtureRadians.waist_pivot);
+    expect(root.getObjectByName('waist_pivot')?.rotation.y).toBe(mappedFixtureRadians.waist_pivot);
+    expect(root.getObjectByName('waist_pivot')?.rotation.z).toBe(0);
     expect(root.getObjectByName('shoulder_pivot')?.rotation.z).toBe(
       mappedFixtureRadians.shoulder_pivot,
     );
     expect(root.getObjectByName('elbow_pivot')?.rotation.z).toBe(mappedFixtureRadians.elbow_pivot);
-    expect(root.getObjectByName('wrist_roll_pivot')?.rotation.z).toBe(
+    expect(root.getObjectByName('wrist_roll_pivot')?.rotation.y).toBe(
       mappedFixtureRadians.wrist_roll_pivot,
     );
+    expect(root.getObjectByName('wrist_roll_pivot')?.rotation.z).toBe(0);
     expect(root.getObjectByName('wrist_pivot')?.rotation.z).toBe(mappedFixtureRadians.wrist_pivot);
     expect(link1.rotation.z).toBe(0);
   });

@@ -1,4 +1,5 @@
 import type { JointPivotMappingOutput } from '../../../../shared/contracts/joint-pivot-mapping-output';
+import { ROTATION_MAPPING_BY_PIVOT } from './jointRotationAxes';
 
 export const REQUIRED_MAIN_PIVOTS = [
   'waist_pivot',
@@ -50,6 +51,7 @@ export function applyMappedRotationsToPivots(nodes: PivotNodeMap, mapped: JointP
     }
 
     // All main joints are applied through pivot transform nodes, not mesh links.
-    node.rotation.z = mappingByPivot[pivot];
+    const mapping = ROTATION_MAPPING_BY_PIVOT[pivot];
+    node.rotation[mapping.axis] = mappingByPivot[pivot] * mapping.direction;
   }
 }
