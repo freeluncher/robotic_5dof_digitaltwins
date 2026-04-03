@@ -1,4 +1,5 @@
 import { ROBOTIC_V4_GLB_URL } from './assets/modelAssets';
+import { MechanicalLimitPanel } from './components/MechanicalLimitPanel';
 import { ConnectionStatusIndicator } from './components/ConnectionStatusIndicator';
 import { JointControlPanel } from './components/JointControlPanel';
 import { RobotScene } from './components/RobotScene';
@@ -34,6 +35,7 @@ function App() {
         <aside className="status-panel">
           <JointControlPanel />
           <TelemetryPanel />
+          <MechanicalLimitPanel />
 
           <div className="runtime-snapshot">
             <h2>Runtime Snapshot</h2>
