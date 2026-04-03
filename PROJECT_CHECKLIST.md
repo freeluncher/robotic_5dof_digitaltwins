@@ -152,7 +152,7 @@ Membangun aplikasi Digital Twin untuk Robotic Arm 5 DOF (robotic_v4) yang memung
 - [x] Buat indikator status koneksi.
 - [x] Buat panel limit mekanik dan warning.
 - [x] Buat mode manual control dan mode live data.
-- [ ] Tambahkan state loading, error, dan fallback.
+- [x] Tambahkan state loading, error, dan fallback.
 
 ## 13. Quality Gate sebelum Rilis
 

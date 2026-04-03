@@ -77,10 +77,13 @@ describe('zustand stores setup', () => {
 
     useUiStore.getState().setControlMode('live');
     useUiStore.getState().togglePanel();
+    useUiStore.getState().setSystemFallback('Fallback mode active.');
 
     const state = useUiStore.getState();
     expect(state.controlMode).toBe('live');
     expect(state.panelOpen).toBe(false);
+    expect(state.systemState).toBe('fallback');
+    expect(state.systemMessage).toBe('Fallback mode active.');
   });
 
   it('mengelola connectivity state untuk status koneksi dan transport', () => {

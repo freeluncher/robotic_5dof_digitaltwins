@@ -4,6 +4,7 @@ import { ConnectionStatusIndicator } from './components/ConnectionStatusIndicato
 import { JointControlPanel } from './components/JointControlPanel';
 import { RobotScene } from './components/RobotScene';
 import { StatusCard } from './components/StatusCard';
+import { SystemStatusBanner } from './components/SystemStatusBanner';
 import { TelemetryPanel } from './components/TelemetryPanel';
 import { useDigitalTwinStatus } from './hooks/useDigitalTwinStatus';
 
@@ -25,6 +26,7 @@ function App() {
             <ConnectionStatusIndicator />
           </div>
         </div>
+        <SystemStatusBanner />
       </header>
 
       <section className="visualization-layout" aria-label="Digital twin initial visualization">

@@ -23,6 +23,8 @@ export function resetAllStores() {
   useUiStore.setState({
     controlMode: 'manual',
     panelOpen: true,
+    systemState: 'loading',
+    systemMessage: 'Initializing digital twin...',
   });
 
   useConnectivityStore.setState({
