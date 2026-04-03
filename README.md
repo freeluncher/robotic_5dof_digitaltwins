@@ -27,7 +27,13 @@ The project is beyond the initial scaffold stage. Major implemented capabilities
 - Axis calibration fixes for shoulder, elbow, wrist roll, and wrist pivot
 - Wrist roll runtime mapping aligned with the `link2` normal
 - Parallel gripper mechanism with gear, connection-link, and finger coupling
-- Manual/live joint control panel with 5 DOF sliders and gripper control
+- Manual and live-data control modes with explicit mode state in the UI
+- Joint control panel with 5 DOF sliders and gripper control (manual mode)
+- Realtime telemetry panel with stream freshness state and sample counters
+- Connection status indicator in the top layout area
+- Mechanical limit and warning panel with safe/caution/limit/violation states
+- System status banner with loading, ready, fallback, and error states
+- Wide-screen layout optimization for better 1920x1080 space usage and reduced vertical scrolling
 - Critical mechanical limits enforced:
   - shoulder max: `167 deg`
   - gripper min: `90 deg` (maximum clamping position)
@@ -43,7 +49,6 @@ apps/
   api/        .NET 8 Web API + SignalR + xUnit
 shared/
   contracts/  DTOs, event contracts, JSON schema, compatibility docs
-notes/        Step-by-step engineering implementation notes
 ```
 
 ## Technology Stack
@@ -149,10 +154,10 @@ Working rules:
 Major items still in progress:
 
 - API and domain documentation completion
-- Realtime telemetry panel
-- Operational connection status indicator
-- Mechanical limit and warning panel
-- Pre-release quality-gate hardening
+- Hardware payload examples in developer-facing docs
+- Automated docs generation guide
+- Pre-release quality-gate hardening across frontend, backend, and contract checks
+- Release pipeline and environment hardening (dev/staging/production)
 
 ## Windows Note
 
