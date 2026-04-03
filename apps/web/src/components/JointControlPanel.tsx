@@ -76,8 +76,8 @@ export function JointControlPanel() {
 
       <p className="joint-panel-hint">
         {isManualMode
-          ? 'Manual mode aktif: slider menggerakkan joint hardware state secara langsung.'
-          : 'Live mode aktif: panel dikunci agar data realtime tidak tertimpa kontrol manual.'}
+          ? 'Manual mode is active: the slider directly controls the hardware joint states.'
+          : 'Live mode is active: the panel is locked so that realtime data is not overwritten by manual control.'}
       </p>
 
       <div className="joint-controls-grid">
@@ -132,7 +132,7 @@ export function JointControlPanel() {
             setGripper(neutralGripperAngle());
           }}
         >
-          Reset Ke Netral (90 deg)
+          Reset Position (90 deg)
         </button>
       </div>
     </section>

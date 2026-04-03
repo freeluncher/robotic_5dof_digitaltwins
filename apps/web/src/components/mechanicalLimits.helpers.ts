@@ -32,7 +32,7 @@ const JOINT_LIMIT_SPECS: LimitSpec[] = [
     min: 0,
     max: 180,
     cautionMargin: 10,
-    guidance: 'Jaga rotasi tetap jauh dari batas kabel internal.',
+    guidance: 'Keep rotation away from internal cable limits.',
   },
   {
     field: 'shoulder',
@@ -40,7 +40,7 @@ const JOINT_LIMIT_SPECS: LimitSpec[] = [
     min: 0,
     max: 167,
     cautionMargin: 7,
-    guidance: 'Batas shoulder lebih sempit agar link tidak menabrak base.',
+    guidance: 'Shoulder limits are tighter to prevent the links from colliding with the base.',
   },
   {
     field: 'elbow',
@@ -48,7 +48,7 @@ const JOINT_LIMIT_SPECS: LimitSpec[] = [
     min: 0,
     max: 180,
     cautionMargin: 10,
-    guidance: 'Pantau tekukan lengan supaya tidak mencapai sudut ekstrem terlalu lama.',
+    guidance: 'Monitor elbow flexion to avoid reaching extreme angles for extended periods.',
   },
   {
     field: 'wristRoll',
@@ -56,7 +56,7 @@ const JOINT_LIMIT_SPECS: LimitSpec[] = [
     min: 0,
     max: 180,
     cautionMargin: 10,
-    guidance: 'Rotasi roll harus tetap stabil agar kabel tidak terpuntir berlebih.',
+    guidance: 'Keep the wrist roll rotation stable to prevent excessive cable twisting.',
   },
   {
     field: 'wrist',
@@ -64,7 +64,7 @@ const JOINT_LIMIT_SPECS: LimitSpec[] = [
     min: 0,
     max: 180,
     cautionMargin: 10,
-    guidance: 'Pitch pergelangan memengaruhi ruang gerak gripper di ujung arm.',
+    guidance: 'Wrist pitch affects the reachable workspace of the gripper at the end of the arm.',
   },
   {
     field: 'gripper',
@@ -72,7 +72,7 @@ const JOINT_LIMIT_SPECS: LimitSpec[] = [
     min: 90,
     max: 180,
     cautionMargin: 5,
-    guidance: 'Gripper minimum 90° menandai posisi terbuka penuh.',
+    guidance: 'Gripper minimum 90° indicates the fully open position.',
   },
 ];
 

@@ -6,8 +6,8 @@ export function getControlModeLabel(mode: ControlMode): string {
 
 export function getControlModeDescription(mode: ControlMode): string {
   return mode === 'manual'
-    ? 'Operator dapat menggerakkan joint secara langsung dengan slider.'
-    : 'Slider dikunci dan model mengikuti data telemetry realtime.';
+    ? 'Operator can move the joints directly with the slider.'
+    : 'The slider is locked and the model follows realtime telemetry data.';
 }
 
 export function getControlModeTone(mode: ControlMode): 'manual' | 'live' {

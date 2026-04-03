@@ -38,7 +38,7 @@ export function MechanicalLimitPanel() {
         <div>
           <h2>Mechanical Limits & Warnings</h2>
           <p className="mechanical-limit-subtitle">
-            Monitor batas aman joint untuk mencegah tabrakan mekanik dan posisi ekstrem.
+            Monitor joint safe limits to prevent mechanical collisions and extreme positions.
           </p>
         </div>
 
@@ -84,12 +84,12 @@ export function MechanicalLimitPanel() {
       <div className="mechanical-limit-warning-box">
         <h3>Warnings</h3>
         {warningRows.length === 0 ? (
-          <p>Semua joint berada di area aman.</p>
+          <p>All joints are in safe areas.</p>
         ) : (
           <ul>
             {warningRows.map((row) => (
               <li key={row.field}>
-                <strong>{row.label}</strong> berada pada status {statusLabelByState(row.state).toLowerCase()}.
+                <strong>{row.label}</strong> is in status {statusLabelByState(row.state).toLowerCase()}.
                 {` ${row.guidance}`}
               </li>
             ))}

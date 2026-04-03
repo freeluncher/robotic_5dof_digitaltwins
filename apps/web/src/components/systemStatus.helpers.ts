@@ -50,17 +50,17 @@ export function getSystemStateLabel(state: SystemState): string {
 export function getSystemStateDescription(state: SystemState, input: SystemStatusInput): string {
   switch (state) {
     case 'loading':
-      return 'Menunggu inisialisasi data dan koneksi awal.';
+      return 'Waiting for data initialization and initial connection.';
     case 'fallback':
       return input.controlMode === 'live'
-        ? 'Live data belum tersedia, sistem memakai fallback view.'
-        : 'Simulator aktif sebagai sumber data sementara.';
+        ? 'Live data is not available, system is using fallback view.'
+        : 'Simulator is active as a temporary data source.';
     case 'error':
-      return input.lastReason ?? 'Terjadi error pada status sistem.';
+      return input.lastReason ?? 'An error occurred in the system status.';
     case 'ready':
     default:
       return input.isConnected
-        ? 'Sistem siap dan mengikuti telemetry realtime.'
-        : 'Sistem siap dalam mode lokal.';
+        ? 'System is ready and following real-time telemetry.'
+        : 'System is ready in local mode.';
   }
 }
