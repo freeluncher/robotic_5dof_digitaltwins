@@ -9,6 +9,12 @@ import {
   withJointAngle,
   type JointField,
 } from './jointControlPanel.helpers';
+import {
+  getControlModeDescription,
+  getControlModeLabel,
+  getControlModeTone,
+  isLiveMode,
+} from './controlMode.helpers';
 
 type JointControlConfig = {
   field: JointField;
@@ -35,15 +41,10 @@ export function JointControlPanel() {
   const setHardware = useRobotStore((state) => state.setHardware);
   const setGripper = useRobotStore((state) => state.setGripper);
 
-  const isManualMode = controlMode === 'manual';
-
-  const controlHint = useMemo(
-    () =>
-      isManualMode
-        ? 'Manual mode aktif: slider menggerakkan joint hardware state secara langsung.'
-        : 'Live mode aktif: panel dikunci agar data realtime tidak tertimpa kontrol manual.',
-    [isManualMode],
-  );
+  const isManualMode = !isLiveMode(controlMode);
+  const modeLabel = useMemo(() => getControlModeLabel(controlMode), [controlMode]);
+  const modeDescription = useMemo(() => getControlModeDescription(controlMode), [controlMode]);
+  const modeTone = useMemo(() => getControlModeTone(controlMode), [controlMode]);
 
   return (
     <section className="joint-panel" aria-label="Joint control panel">
@@ -67,7 +68,17 @@ export function JointControlPanel() {
         </div>
       </div>
 
-      <p className="joint-panel-hint">{controlHint}</p>
+      <div className={`control-mode-summary control-mode-summary-${modeTone}`}>
+        <span className="control-mode-summary-label">Mode aktif</span>
+        <strong>{modeLabel}</strong>
+        <p>{modeDescription}</p>
+      </div>
+
+      <p className="joint-panel-hint">
+        {isManualMode
+          ? 'Manual mode aktif: slider menggerakkan joint hardware state secara langsung.'
+          : 'Live mode aktif: panel dikunci agar data realtime tidak tertimpa kontrol manual.'}
+      </p>
 
       <div className="joint-controls-grid">
         {JOINT_CONTROLS.map((joint) => {

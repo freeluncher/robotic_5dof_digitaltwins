@@ -154,6 +154,44 @@ h2 {
   color: #334e68;
 }
 
+.control-mode-summary {
+  margin-top: 0.75rem;
+  border-radius: 0.7rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid #d5e7f8;
+  background: #f8fbff;
+}
+
+.control-mode-summary-manual {
+  border-color: #9ec7ee;
+  background: linear-gradient(160deg, #f8fcff 0%, #ebf6ff 100%);
+}
+
+.control-mode-summary-live {
+  border-color: #8bcdaf;
+  background: linear-gradient(160deg, #f4fff8 0%, #e6fff0 100%);
+}
+
+.control-mode-summary-label {
+  display: inline-block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+}
+
+.control-mode-summary strong {
+  display: block;
+  margin-top: 0.1rem;
+  color: #0f172a;
+}
+
+.control-mode-summary p {
+  margin-top: 0.25rem;
+  font-size: 0.82rem;
+  color: #334e68;
+}
+
 .joint-controls-grid {
   margin-top: 0.85rem;
   display: grid;
@@ -612,6 +650,10 @@ h2 {
 
   .connection-badge {
     width: 100%;
+  }
+
+  .control-mode-summary {
+    margin-top: 0.6rem;
   }
 
   .mechanical-limit-header {
